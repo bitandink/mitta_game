@@ -1,0 +1,3900 @@
+/* ============================================================================
+ * 13개 스테이지 미니게임 스타일
+ * ============================================================================ */
+
+/* ============================================================================
+ * 01. 달콤한 라운지 · 사탕 짝 맞추기
+ * ============================================================================ */
+
+.modal_content:has(.candy-game) {
+  max-width: 540px;
+}
+
+.candy-game {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.candy-story {
+  margin: 0;
+  line-height: 1.8;
+  color: #f4eaff;
+  font-size: 14px;
+}
+
+.candy-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.candy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.candy-card {
+  min-height: 100px;
+  border: 2px solid #9561c6;
+  border-radius: 14px;
+  background: #59368a;
+  color: white;
+  font-size: 42px;
+  cursor: pointer;
+  transition: transform .15s, background .15s;
+}
+
+.candy-card:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #6f47a4;
+}
+
+.candy-card:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+.candy-card.is-open {
+  background: #f9eafb;
+  color: #2a1740;
+}
+
+.candy-card.is-matched {
+  background: #e4f7e5;
+  border-color: #79bd84;
+  color: #25382b;
+}
+
+.candy-card:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.candy-message {
+  min-height: 24px;
+  margin: 0;
+  color: #ffe5a7;
+}
+
+.candy-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.candy-actions button {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.candy-actions button:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .candy-card {
+    min-height: 74px;
+    font-size: 32px;
+  }
+
+  .candy-grid {
+    gap: 8px;
+  }
+}
+
+/* ============================================================================
+ * 02. 불타는 동굴 · 용암 탈출
+ * ============================================================================ */
+
+.modal_content:has(.cave-game) {
+  max-width: 580px;
+}
+
+.cave-game {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.cave-story {
+  margin: 0;
+  line-height: 1.8;
+  font-size: 14px;
+  color: #f4eaff;
+}
+
+.cave-guide {
+  margin: 0;
+  font-size: 13px;
+  color: #ffe4b1;
+}
+
+.cave-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.cave-message {
+  text-align: left;
+}
+
+.cave-resets {
+  white-space: nowrap;
+}
+
+.cave-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.cave-cell {
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  font-size: clamp(19px, 4vw, 32px);
+  cursor: pointer;
+  transition: background-color .15s;
+}
+
+.cave-safe {
+  background: #7d9184;
+  border-color: #afc1b3;
+}
+
+.cave-warning {
+  background: #e9b24f;
+  border-color: #ffe09b;
+}
+
+.cave-danger {
+  background: #ba452d;
+  border-color: #f27e42;
+}
+
+.cave-player {
+  outline: 3px solid #fff;
+  outline-offset: -4px;
+}
+
+.cave-cell:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 1px;
+}
+
+.cave-actions button {
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .cave-grid {
+    gap: 4px;
+  }
+
+  .cave-cell {
+    border-width: 1px;
+    border-radius: 6px;
+  }
+
+  .cave-status {
+    flex-wrap: wrap;
+  }
+}
+
+/* ============================================================================
+ * 03. 사랑의 묘약 가게 · 비밀 레시피
+ * ============================================================================ */
+
+.modal_content:has(.potion-game) {
+  max-width: 540px;
+}
+
+.potion-game {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.potion-story {
+  margin: 0;
+  color: #f4eaff;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.potion-cauldron {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  border: 2px solid #8856bb;
+  border-radius: 16px;
+  background: radial-gradient(circle,
+  #7740a0 0%,
+  #3a214f 75%);
+}
+
+.potion-cauldron-icon {
+  font-size: 66px;
+}
+
+.potion-bubbles {
+  position: absolute;
+  top: 12px;
+  right: 28%;
+  font-size: 24px;
+  animation: potionFloat 2s ease-in-out infinite;
+}
+
+.potion-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.potion-slots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.potion-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border: 2px dashed #77538e;
+  border-radius: 12px;
+  background: #342541;
+  color: #d6bee8;
+  font-size: 26px;
+}
+
+.potion-slot.is-filled {
+  border-style: solid;
+  border-color: #d4a6f3;
+  background: #5d367a;
+}
+
+.potion-message {
+  min-height: 42px;
+  margin: 0;
+  color: #ffe5a7;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.potion-ingredients {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.potion-ingredient {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 90px;
+  padding: 10px 4px;
+  border: 2px solid #9561c6;
+  border-radius: 14px;
+  background: #59368a;
+  color: white;
+  cursor: pointer;
+  transition: transform .15s, background .15s;
+}
+
+.potion-ingredient:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: #7048a3;
+}
+
+.potion-ingredient:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.potion-ingredient:focus-visible,
+.potion-restart:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+.potion-ingredient-icon {
+  font-size: 30px;
+}
+
+.potion-ingredient-name {
+  font-size: 12px;
+}
+
+.potion-restart {
+  justify-self: center;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.potion-cauldron.is-success {
+  animation: potionSuccess .5s ease;
+}
+
+.potion-cauldron.is-exploding {
+  animation: potionExplosion .5s ease;
+}
+
+.potion-cauldron.is-complete {
+  border-color: #ffc5e3;
+  background: radial-gradient(circle,
+  #a54f91 0%,
+  #51265f 75%);
+}
+
+@keyframes potionFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes potionSuccess {
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 24px #d79dff;
+  }
+}
+
+@keyframes potionExplosion {
+  20% {
+    transform: translateX(-8px);
+  }
+
+  40% {
+    transform: translateX(8px);
+  }
+
+  60% {
+    transform: translateX(-5px);
+  }
+
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+@media (max-width: 480px) {
+  .potion-ingredients {
+    gap: 6px;
+  }
+
+  .potion-ingredient {
+    min-height: 78px;
+    padding: 8px 2px;
+  }
+
+  .potion-ingredient-icon {
+    font-size: 25px;
+  }
+
+  .potion-ingredient-name {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .potion-cauldron,
+  .potion-bubbles {
+    animation: none !important;
+  }
+}
+
+/* ============================================================================
+ * 04. 트릭 오어 트릿 거리 · 다섯 집의 비밀
+ * ============================================================================ */
+
+.modal_content:has(.treat-game) {
+  max-width: 680px;
+}
+
+.treat-game {
+  display: grid;
+  gap: 20px;
+  margin-top: 16px;
+  text-align: left;
+}
+
+.treat-story {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #f4eaff;
+}
+
+.treat-story p {
+  margin: 0 0 8px;
+}
+
+/* --- 다섯 집 --- */
+.treat-street {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.treat-house {
+  --house-color: #777087;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 8px 4px;
+  border-radius: 12px;
+  background: #342547;
+  text-align: center;
+}
+
+.treat-house-number {
+  margin-bottom: 8px;
+  color: #ffe5a7;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.treat-house-roof {
+  width: 90%;
+  height: 28px;
+  background: var(--house-color);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transition: background .2s;
+}
+
+.treat-house-body {
+  position: relative;
+  width: 78%;
+  height: 62px;
+  background: var(--house-color);
+  border: 2px solid #e5d7ef;
+  border-top: 0;
+  transition: background .2s;
+}
+
+.treat-house-window {
+  position: absolute;
+  top: 12px;
+  left: 9px;
+  color: #ffdf8d;
+  font-size: 17px;
+}
+
+.treat-house-door {
+  position: absolute;
+  bottom: 0;
+  right: 9px;
+  width: 18px;
+  height: 29px;
+  border-radius: 7px 7px 0 0;
+  background: #2a193a;
+}
+
+.treat-house-label,
+.treat-house-resident {
+  display: block;
+  width: 100%;
+  margin-top: 7px;
+  color: #f4eaff;
+  font-size: 11px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* --- 단서 --- */
+.treat-clues {
+  padding: 16px;
+  border: 1px solid #8664a8;
+  border-radius: 14px;
+  background: #342547;
+}
+
+.treat-clues h3,
+.treat-board h3 {
+  margin: 0 0 12px;
+  color: #ffe5a7;
+  font-size: 15px;
+}
+
+.treat-clues ol {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 22px;
+}
+
+.treat-clues li {
+  color: #f4eaff;
+  font-size: 13px;
+  line-height: 1.8;
+  padding-left: 3px;
+}
+
+/* --- 추리판 --- */
+.treat-board {
+  display: grid;
+  gap: 10px;
+}
+
+.treat-board>p {
+  margin: 0 0 4px;
+  color: #d9c9e9;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.treat-board-row {
+  display: grid;
+  grid-template-columns: 50px minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.treat-row-number {
+  color: #ffe5a7;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.treat-board select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 8px;
+  border: 1px solid #9770bc;
+  border-radius: 9px;
+  background: #3a294e;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.treat-board select option {
+  background: #30213f;
+  color: #fff;
+}
+
+/* --- 사탕 바구니 위치 --- */
+.treat-basket {
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid #8664a8;
+  border-radius: 12px;
+}
+
+.treat-basket legend {
+  padding: 0 6px;
+  color: #ffe5a7;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.treat-basket-options {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.treat-basket-options label {
+  position: relative;
+  cursor: pointer;
+}
+
+.treat-basket-options input {
+  position: absolute;
+  opacity: 0;
+}
+
+.treat-basket-options span {
+  display: block;
+  min-width: 62px;
+  padding: 10px;
+  border: 1px solid #9770bc;
+  border-radius: 9px;
+  background: #3a294e;
+  color: #fff;
+  text-align: center;
+  font-size: 13px;
+}
+
+.treat-basket-options input:checked+span {
+  border-color: #ffdc8c;
+  background: #8151a7;
+  color: #fff5ce;
+  font-weight: 700;
+}
+
+.treat-basket-options input:focus-visible+span {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 3px;
+}
+
+/* --- 메시지와 버튼 --- */
+.treat-message {
+  min-height: 24px;
+  margin: 0;
+  color: #e9d9fa;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.treat-message.is-warning {
+  color: #ffd78c;
+}
+
+.treat-message.is-error {
+  color: #ffabb5;
+}
+
+.treat-message.is-success {
+  color: #bdf0c5;
+}
+
+.treat-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.treat-actions button {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.treat-actions button:hover:not(:disabled) {
+  background: #a06bd1;
+}
+
+.treat-actions button:disabled {
+  opacity: .5;
+  cursor: default;
+}
+
+.treat-actions button:focus-visible,
+.treat-board select:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+/* --- 클리어 연출 --- */
+.treat-success {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #b48cdb;
+  border-radius: 14px;
+  background: #39264f;
+  text-align: center;
+}
+
+.treat-success-art {
+  font-size: 36px;
+}
+
+.treat-success h3 {
+  margin: 0;
+  color: #ffe5a7;
+  font-size: 18px;
+}
+
+.treat-success p {
+  margin: 0;
+  color: #f4eaff;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* --- 모바일 --- */
+@media (max-width: 480px) {
+  .treat-street {
+    gap: 4px;
+  }
+
+  .treat-house {
+    padding: 6px 2px;
+  }
+
+  .treat-house-roof {
+    height: 18px;
+  }
+
+  .treat-house-body {
+    height: 45px;
+  }
+
+  .treat-house-window {
+    top: 7px;
+    left: 4px;
+    font-size: 11px;
+  }
+
+  .treat-house-door {
+    right: 4px;
+    width: 12px;
+    height: 21px;
+  }
+
+  .treat-house-label,
+  .treat-house-resident {
+    font-size: 9px;
+  }
+
+  .treat-board-row {
+    grid-template-columns: 38px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .treat-board select {
+    padding: 9px 4px;
+    font-size: 12px;
+  }
+
+  .treat-basket-options {
+    justify-content: center;
+  }
+
+  .treat-basket-options span {
+    min-width: 48px;
+    padding: 9px 6px;
+  }
+}
+
+/* ============================================================================
+ * 06. 할로윈 케이크 하우스 · 케이크 정렬
+ * ============================================================================ */
+
+.cake-game {
+  display: grid;
+  gap: 20px;
+  margin-top: 12px;
+  color: #f6eaff;
+}
+
+/* --- 게임 소개 --- */
+.cake-intro {
+  padding: 18px;
+  border: 1px solid #8764a8;
+  border-radius: 16px;
+  background: #352448;
+  text-align: center;
+}
+
+.cake-intro-art {
+  margin-bottom: 8px;
+  font-size: 34px;
+}
+
+.cake-intro h3 {
+  margin: 0 0 12px;
+  color: #ffe3a2;
+  font-size: 18px;
+}
+
+.cake-intro p {
+  margin: 6px 0;
+  color: #eadcf5;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* --- 진행 상황 --- */
+.cake-status {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #352448;
+  font-size: 13px;
+}
+
+.cake-status strong {
+  color: #ffdd8b;
+}
+
+/* --- 케이크 접시 --- */
+.cake-plates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.cake-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  min-width: 0;
+  min-height: 185px;
+  padding: 12px 5px;
+  border: 2px solid #71548d;
+  border-radius: 16px;
+  background: #30213f;
+  color: #fff;
+  cursor: pointer;
+  transition:
+  transform .15s,
+  border-color .15s,
+  background .15s;
+}
+
+.cake-plate:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: #bc8ee8;
+}
+
+.cake-plate.is-selected {
+  transform: translateY(-5px);
+  border-color: #ffda82;
+  background: #49305f;
+  box-shadow: 0 0 16px #ffda8240;
+}
+
+.cake-plate.is-complete {
+  border-color: #8cdaab;
+}
+
+.cake-plate:disabled {
+  cursor: default;
+}
+
+.cake-plate:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 3px;
+}
+
+/* --- 케이크 3단 스택 --- */
+.cake-stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  width: 100%;
+  max-width: 100px;
+  min-height: 115px;
+}
+
+.cake-layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  border: 1px solid #ffffff30;
+  border-radius: 9px;
+  background: #514065;
+  font-size: 24px;
+  line-height: 1;
+  transition: background .2s;
+}
+
+.cake-layer.is-empty {
+  border: 1px dashed #806b98;
+  background: #3b2c4c;
+  color: #756389;
+  font-size: 15px;
+}
+
+.cake-type-pumpkin {
+  background: #a45c30;
+}
+
+.cake-type-ghost {
+  background: #7275b0;
+}
+
+.cake-type-bat {
+  background: #65438b;
+}
+
+.cake-plate-base {
+  width: 95%;
+  color: #ffda9a;
+  font-size: 18px;
+  line-height: 1;
+  text-align: center;
+}
+
+.cake-plate-label {
+  margin-top: 5px;
+  color: #eadcf5;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* --- 안내 메시지 --- */
+.cake-message {
+  min-height: 24px;
+  margin: 0;
+  color: #eadcf5;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.cake-message.is-error {
+  color: #ffb1bc;
+}
+
+.cake-message.is-success {
+  color: #b7efc8;
+}
+
+/* --- 조작 버튼 --- */
+.cake-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cake-actions button {
+  padding: 11px 16px;
+  border: 1px solid #ac82ce;
+  border-radius: 10px;
+  background: #70479c;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cake-actions button:hover:not(:disabled) {
+  background: #8c5bb8;
+}
+
+.cake-actions button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.cake-actions button:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+/* --- 게임 규칙 --- */
+.cake-rules {
+  padding: 15px 18px;
+  border: 1px solid #71548d;
+  border-radius: 12px;
+  background: #30213f;
+}
+
+.cake-rules h4 {
+  margin: 0 0 10px;
+  color: #ffe3a2;
+  font-size: 14px;
+}
+
+.cake-rules ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.cake-rules li {
+  color: #eadcf5;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* --- 클리어 화면 --- */
+.cake-success {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid #b48cdb;
+  border-radius: 14px;
+  background: #3c2854;
+  text-align: center;
+}
+
+.cake-success-art {
+  font-size: 36px;
+}
+
+.cake-success h3 {
+  margin: 0;
+  color: #ffe3a2;
+  font-size: 18px;
+}
+
+.cake-success p {
+  margin: 0;
+  color: #eadcf5;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* --- 모바일 --- */
+@media (max-width: 480px) {
+  .cake-plates {
+    gap: 5px;
+  }
+
+  .cake-plate {
+    min-height: 155px;
+    padding: 8px 3px;
+  }
+
+  .cake-stack {
+    min-height: 96px;
+    gap: 4px;
+  }
+
+  .cake-layer {
+    height: 29px;
+    font-size: 19px;
+  }
+
+  .cake-plate-base {
+    width: 85%;
+    height: 8px;
+    margin: 4px auto 0;
+    border: 2px solid #ffda9a;
+    border-radius: 50%;
+    background: rgba(255, 218, 154, 0.12);
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .cake-plate-label {
+    font-size: 10px;
+  }
+
+  .cake-status {
+    font-size: 12px;
+  }
+
+  .cake-actions button {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ============================================================================
+ * 07. 꼬마 마녀의 오두막 · 마법진 땅따먹기
+ * ============================================================================ */
+
+.modal_content:has(.hut-game) {
+  max-width: 720px
+}
+
+.hut-game {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+  color: #f4eaff
+}
+
+.hut-intro {
+  padding: 16px;
+  background: #352448;
+  border: 1px solid #8664a8;
+  border-radius: 14px;
+  text-align: center
+}
+
+.hut-intro h3 {
+  color: #ffe3a2;
+  margin: 0 0 10px;
+  font-size: 18px
+}
+
+.hut-intro p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 5px 0
+}
+
+.hut-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: #352448;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px
+}
+
+.hut-status strong {
+  color: #ffe3a2
+}
+
+.hut-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #180e2a;
+  border: 3px solid #9c70d9;
+  border-radius: 10px;
+  image-rendering: auto
+}
+
+.hut-message {
+  min-height: 22px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #ffe3a2;
+  margin: 0
+}
+
+.hut-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 22px
+}
+
+.hut-arrows {
+  display: grid;
+  justify-items: center;
+  gap: 5px
+}
+
+.hut-arrows>div {
+  display: flex;
+  gap: 5px
+}
+
+.hut-controls button,
+.hut-restart {
+  border: 1px solid #a987d0;
+  border-radius: 9px;
+  background: #70479c;
+  color: #fff;
+  padding: 10px 13px;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none
+}
+
+.hut-controls button:active {
+  background: #a06bd1
+}
+
+.hut-cast {
+  min-height: 55px
+}
+
+.hut-restart {
+  justify-self: center
+}
+
+.hut-guide {
+  font-size: 12px;
+  color: #d9c9e9;
+  line-height: 1.7;
+  margin: 0
+}
+
+@media(max-width:480px) {
+  .hut-intro {
+    padding: 12px
+  }
+
+  .hut-status {
+    font-size: 12px
+  }
+
+  .hut-controls {
+    gap: 12px
+  }
+
+  .hut-controls button {
+    padding: 10px
+  }
+}
+
+/* ============================================================================
+ * 08. 마녀의 빗자루 언덕 · 빗자루 자격 시험
+ * ============================================================================ */
+
+.broom-game {
+  max-width: 820px;
+  margin: 0 auto;
+  color: #f6ecff;
+  text-align: center
+}
+
+.broom-intro {
+  margin-bottom: 14px;
+  line-height: 1.5
+}
+
+.broom-intro-art {
+  font-size: 30px;
+  margin-bottom: 5px
+}
+
+.broom-intro h3 {
+  font-size: 20px;
+  color: #ffdda0;
+  margin: 5px 0 8px
+}
+
+.broom-intro p {
+  font-size: 14px;
+  margin: 4px 0
+}
+
+.broom-hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0 8px;
+  font-size: 14px
+}
+
+.broom-hud strong {
+  color: #ffdf9b
+}
+
+.broom-canvas-wrap {
+  width: 100%;
+  border: 3px solid #a985d3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #201331;
+  box-shadow: 0 0 24px #6c469744
+}
+
+.broom-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2/1;
+  object-fit: contain
+}
+
+.broom-status {
+  min-height: 24px;
+  margin: 10px 0;
+  color: #ffdfa5;
+  font-size: 14px;
+  font-weight: 700
+}
+
+.broom-controls {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin: 10px 0;
+  touch-action: none
+}
+
+.broom-control,
+.broom-restart {
+  border: 1px solid #c4a1eb;
+  background: #65418f;
+  color: #fff;
+  border-radius: 10px;
+  padding: 11px 25px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none
+}
+
+.broom-control:active {
+  background: #9662cb;
+  transform: translateY(1px)
+}
+
+.broom-control:focus-visible,
+.broom-restart:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 3px
+}
+
+.broom-help {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #dbc9ed;
+  margin: 10px 0
+}
+
+.broom-result {
+  font-size: 20px;
+  color: #ffe29e;
+  font-weight: 800;
+  margin: 14px 0
+}
+
+.broom-actions {
+  margin-top: 12px
+}
+
+.broom-game [hidden] {
+  display: none !important
+}
+
+@media(max-width:540px) {
+  .broom-intro h3 {
+    font-size: 17px
+  }
+
+  .broom-intro p {
+    font-size: 12px
+  }
+
+  .broom-hud {
+    font-size: 12px
+  }
+
+  .broom-control {
+    flex: 1;
+    max-width: 170px;
+    padding: 12px 10px
+  }
+
+  .broom-status {
+    font-size: 12px
+  }
+}
+
+/* ============================================================================
+ * 09. 마녀의 요리공방 · 지옥 주방
+ * ============================================================================ */
+
+.kitchen-game {
+  color: #f5eafa;
+  max-width: 760px;
+  margin: auto;
+  font-family: inherit
+}
+
+.kitchen-intro {
+  text-align: center;
+  margin: 0 0 16px
+}
+
+.kitchen-intro-art {
+  font-size: 34px
+}
+
+.kitchen-intro h3 {
+  margin: 6px 0;
+  color: #ffdfa0;
+  font-size: 20px
+}
+
+.kitchen-intro p {
+  margin: 5px 0;
+  line-height: 1.55;
+  font-size: 14px
+}
+
+.kitchen-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #332347;
+  padding: 10px 13px;
+  border-radius: 12px;
+  margin-bottom: 14px
+}
+
+.kitchen-top button,
+.kitchen-clear {
+  border: 1px solid #b58ad3;
+  background: #51346e;
+  color: #fff1db;
+  border-radius: 9px;
+  padding: 8px 11px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px
+}
+
+.kitchen-heading {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #ffe1a4;
+  font-weight: 700;
+  margin: 14px 0 8px
+}
+
+.kitchen-heading small {
+  font-weight: 400;
+  color: #dac6e7;
+  font-size: 12px
+}
+
+.kitchen-orders,
+.kitchen-pots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px
+}
+
+.kitchen-order,
+.kitchen-pot {
+  background: #38264e;
+  border: 2px solid #75548f;
+  border-radius: 12px;
+  padding: 12px 9px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  min-width: 0;
+  font: inherit;
+  transition: border-color .15s, background .15s
+}
+
+.kitchen-order:hover,
+.kitchen-pot:hover,
+.kitchen-ingredient:hover {
+  border-color: #ffda95
+}
+
+.kitchen-order.is-selected {
+  border-color: #ffda95;
+  background: #574070;
+  box-shadow: 0 0 0 2px #ffda9533
+}
+
+.kitchen-order-icon,
+.kitchen-pot-icon {
+  font-size: 30px
+}
+
+.kitchen-order strong,
+.kitchen-pot strong {
+  font-size: 15px
+}
+
+.kitchen-order small,
+.kitchen-pot small {
+  font-size: 12px;
+  color: #e6d3ee;
+  text-align: center
+}
+
+.kitchen-ingredients {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  gap: 6px
+}
+
+.kitchen-ingredient {
+  border: 1px solid #775b92;
+  border-radius: 10px;
+  background: #302142;
+  color: #f6ebff;
+  cursor: pointer;
+  padding: 9px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  font: inherit
+}
+
+.kitchen-ingredient span {
+  font-size: 25px
+}
+
+.kitchen-ingredient small {
+  font-size: 11px
+}
+
+.kitchen-prepared {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #2d213f;
+  padding: 9px 11px;
+  border-radius: 10px;
+  margin-top: 9px;
+  font-size: 13px
+}
+
+.kitchen-prepared span {
+  font-size: 20px;
+  flex: 1
+}
+
+.kitchen-clear:disabled {
+  opacity: .45;
+  cursor: default
+}
+
+.kitchen-pot.is-ready {
+  border-color: #9de2a3;
+  background: #2d5144
+}
+
+.kitchen-pot.is-burnt {
+  border-color: #ff9d84;
+  background: #5a2d38
+}
+
+.kitchen-pot-bar {
+  width: 100%;
+  height: 7px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #21152d;
+  margin-top: 4px
+}
+
+.kitchen-pot-bar>span {
+  display: block;
+  height: 100%;
+  background: #eac58c;
+  transition: width .1s linear
+}
+
+.kitchen-notice {
+  margin: 14px 0 6px;
+  background: #47315e;
+  color: #ffe5b6;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 20px
+}
+
+.kitchen-help {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #dac6e7;
+  margin: 9px 0 0
+}
+
+@media(max-width:600px) {
+  .kitchen-ingredients {
+    grid-template-columns: repeat(5, minmax(0, 1fr))
+  }
+
+  .kitchen-ingredient span {
+    font-size: 23px
+  }
+
+  .kitchen-intro p {
+    font-size: 13px
+  }
+
+  .kitchen-order,
+  .kitchen-pot {
+    padding: 10px 5px
+  }
+
+  .kitchen-order strong,
+  .kitchen-pot strong {
+    font-size: 13px
+  }
+}
+
+/* ============================================================================
+ * 10. 마법사의 모자 숲 · 모자 셔플
+ * ============================================================================ */
+
+.modal_content:has(.hat-game) {
+  max-width: 740px;
+}
+
+.hat-game {
+  display: grid;
+  gap: 15px;
+  color: #f6edff;
+}
+
+.hat-intro {
+  text-align: center;
+  line-height: 1.6;
+}
+
+.hat-intro-art {
+  font-size: 27px;
+}
+
+.hat-intro h3 {
+  margin: 4px 0 7px;
+  color: #ffdf9b;
+  font-size: 19px;
+}
+
+.hat-intro p {
+  margin: 3px 0;
+  font-size: 13px;
+}
+
+.hat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hat-progress {
+  color: #ffdf9b;
+}
+
+.hat-restart,
+.hat-action {
+  cursor: pointer;
+  border: 1px solid #bd91ee;
+  border-radius: 10px;
+  background: #583584;
+  color: #fff;
+  padding: 9px 14px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.hat-restart:hover,
+.hat-action:not(:disabled):hover {
+  background: #7546aa;
+}
+
+.hat-action:disabled {
+  opacity: .65;
+  cursor: default;
+}
+
+.hat-stage {
+  position: relative;
+  background: radial-gradient(ellipse at 50% 85%, #463064, #1b1331 76%);
+  border: 2px solid #7955a7;
+  border-radius: 15px;
+  padding: 18px 10px 10px;
+  overflow: hidden;
+}
+
+.hat-arena {
+  position: relative;
+  height: 165px;
+  width: 100%;
+}
+
+.hat-cup {
+  position: absolute;
+  bottom: 9px;
+  transform: translate(-50%, 0);
+  width: min(18%, 105px);
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.hat-cup:disabled {
+  cursor: default;
+}
+
+.hat-icon {
+  display: block;
+  font-size: clamp(38px, 8vw, 72px);
+  line-height: 1.25;
+  filter: drop-shadow(0 7px 3px rgba(0, 0, 0, .4));
+  transition: transform .2s ease;
+}
+
+.hat-cup.is-revealed .hat-icon {
+  transform: translateY(-27px);
+}
+
+.hat-orb {
+  position: absolute;
+  bottom: 22px;
+  opacity: 0;
+  font-size: 24px;
+  filter: drop-shadow(0 0 9px #ffed9e);
+}
+
+.hat-cup.is-revealed .hat-orb {
+  opacity: 1;
+}
+
+.hat-cup:not(:disabled):hover .hat-icon {
+  filter: drop-shadow(0 0 12px #fbd38e);
+}
+
+.hat-stage-floor {
+  height: 12px;
+  border-radius: 50%;
+  background: #8d659a;
+  box-shadow: 0 0 16px #7754a2;
+}
+
+.hat-message {
+  min-height: 42px;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ffe6a7;
+}
+
+.hat-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.hat-guide {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #d9c6ed;
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .hat-stage {
+    padding: 10px 6px 8px;
+  }
+
+  .hat-arena {
+    height: 118px;
+  }
+
+  .hat-icon {
+    font-size: clamp(33px, 9vw, 50px);
+  }
+
+  .hat-orb {
+    font-size: 18px;
+    bottom: 19px;
+  }
+
+  .hat-intro h3 {
+    font-size: 17px;
+  }
+
+  .hat-intro p {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hat-icon {
+    transition: none;
+  }
+}
+
+/* ============================================================================
+ * 11. 반짝이는 유령 연못 · 거울 퍼즐
+ * ============================================================================ */
+
+.ghost-game {
+  color: #f6efff;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  font-family: inherit
+}
+
+.ghost-intro {
+  padding: 8px 8px 12px
+}
+
+.ghost-intro-art {
+  font-size: 28px
+}
+
+.ghost-intro h3 {
+  margin: 5px 0 8px;
+  color: #ffdda0;
+  font-size: 1.2rem
+}
+
+.ghost-intro p {
+  margin: 4px 0;
+  line-height: 1.55;
+  font-size: .91rem
+}
+
+.ghost-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: #34234e;
+  border: 1px solid #72518e;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  color: #f9e5b2;
+  font-size: .9rem
+}
+
+.ghost-instruction {
+  font-size: .86rem;
+  line-height: 1.5;
+  margin: 12px 0;
+  color: #eee0fa
+}
+
+.ghost-pond {
+  border: 2px solid #8460ad;
+  border-radius: 16px;
+  padding: 14px 10px 18px;
+  background: linear-gradient(#2b204b 0%, #352659 44%, #304c76 52%, #172b58 100%);
+  overflow: hidden;
+  box-shadow: inset 0 0 40px #14122e
+}
+
+.ghost-sky-label,
+.ghost-water-label {
+  color: #f3dbfc;
+  font-size: .8rem;
+  letter-spacing: .04em;
+  margin: 2px 0 8px
+}
+
+.ghost-water-label {
+  color: #bce9ff;
+  margin: 10px 0 4px
+}
+
+.ghost-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ghost-columns), minmax(0, 1fr));
+  gap: 5px;
+  align-items: center;
+  justify-items: center
+}
+
+.ghost-figure,
+.ghost-reflection {
+  width: 100%;
+  max-width: 96px;
+  min-width: 0;
+  aspect-ratio: 1/1.05;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.ghost-figure svg,
+.ghost-reflection svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible
+}
+
+.ghost-waterline {
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent, #a9ddff, transparent);
+  box-shadow: 0 0 12px #9ad6ff;
+  margin: 7px 0
+}
+
+.ghost-reflection {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: rgba(132, 207, 255, .07);
+  cursor: pointer;
+  padding: 4px;
+  transition: background .2s, border-color .2s;
+  filter: drop-shadow(0 2px 6px #0c1841)
+}
+
+.ghost-reflection:hover:not(:disabled),
+.ghost-reflection:focus-visible {
+  background: rgba(157, 212, 255, .2);
+  border-color: #c5e8ff;
+  outline: none
+}
+
+.ghost-reflection.is-found {
+  border-color: #ffe69b;
+  background: rgba(255, 227, 143, .24);
+  box-shadow: 0 0 14px rgba(255, 226, 139, .5)
+}
+
+.ghost-reflection:disabled {
+  cursor: default;
+  opacity: 1
+}
+
+.ghost-number {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  font-size: .7rem;
+  color: #e8f5ff;
+  background: rgba(13, 26, 58, .72);
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px
+}
+
+.ghost-feedback {
+  min-height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffe5a8;
+  font-size: .9rem;
+  line-height: 1.5;
+  padding: 8px
+}
+
+.ghost-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px
+}
+
+.ghost-actions button {
+  border: 1px solid #c4a3e6;
+  background: #65458b;
+  color: white;
+  border-radius: 9px;
+  padding: 10px 15px;
+  font: inherit;
+  font-size: .88rem;
+  cursor: pointer
+}
+
+.ghost-actions button:hover,
+.ghost-actions button:focus-visible {
+  background: #8060a5
+}
+
+.ghost-actions .ghost-next {
+  background: #856038;
+  border-color: #f1cf8e;
+  color: #fff3d2
+}
+
+.ghost-reflection.is-shaking {
+  animation: ghost-shake .35s ease-in-out
+}
+
+@keyframes ghost-shake {
+
+  0%,
+  100% {
+    transform: translateX(0)
+  }
+
+  25% {
+    transform: translateX(-4px)
+  }
+
+  75% {
+    transform: translateX(4px)
+  }
+}
+
+@media(max-width:520px) {
+  .ghost-intro p {
+    font-size: .81rem
+  }
+
+  .ghost-status {
+    font-size: .77rem;
+    padding: 9px
+  }
+
+  .ghost-pond {
+    padding: 10px 5px
+  }
+
+  .ghost-grid {
+    gap: 2px
+  }
+
+  .ghost-reflection {
+    padding: 1px
+  }
+
+  .ghost-number {
+    font-size: .6rem;
+    min-width: 15px;
+    height: 15px;
+    line-height: 15px
+  }
+
+  .ghost-instruction {
+    font-size: .78rem
+  }
+}
+
+/* ============================================================================
+ * 12. 유령의 나무숲 · 길 연결 퍼즐
+ * ============================================================================ */
+
+.forest-game {
+  max-width: 720px;
+  margin: auto;
+  text-align: center;
+  color: #f6eaff
+}
+
+.forest-intro {
+  margin: 0 auto 16px
+}
+
+.forest-intro-icon {
+  font-size: 28px
+}
+
+.forest-intro h3 {
+  color: #ffdb91;
+  margin: 6px 0 10px;
+  font-size: 20px
+}
+
+.forest-intro p {
+  margin: 5px 0;
+  font-size: 13px;
+  line-height: 1.55
+}
+
+.forest-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 530px;
+  margin: 0 auto 12px;
+  color: #ffda96;
+  font-weight: 700
+}
+
+.forest-reset {
+  background: #5c368d;
+  border: 1px solid #ac83db;
+  color: #fff;
+  border-radius: 10px;
+  padding: 9px 13px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px
+}
+
+.forest-reset:hover,
+.forest-reset:focus-visible {
+  background: #7546a8
+}
+
+.forest-board-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: auto
+}
+
+.forest-entrance,
+.forest-exit {
+  font-size: 12px;
+  white-space: nowrap;
+  color: #ffe3a5
+}
+
+.forest-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  width: min(100%, 465px);
+  aspect-ratio: 1;
+  background: #39254e;
+  padding: 7px;
+  border: 2px solid #9a73c9;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #b88cff22
+}
+
+.forest-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #314333, #203025);
+  border: 1px solid #779467;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #efc78e;
+  transition: background .15s, box-shadow .15s
+}
+
+.forest-tile:hover:not(:disabled),
+.forest-tile:focus-visible {
+  background: #415b3f;
+  outline: 2px solid #ffe2a2;
+  outline-offset: -2px
+}
+
+.forest-path {
+  font-family: Arial, sans-serif;
+  font-weight: 900;
+  font-size: clamp(25px, 6vw, 54px);
+  line-height: 1;
+  pointer-events: none;
+  text-shadow: 0 1px 6px #120e15
+}
+
+.forest-tile small {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+  color: #fff1bd;
+  font-size: 9px;
+  font-weight: bold;
+  pointer-events: none;
+  text-shadow: 0 1px 2px #000
+}
+
+.forest-tile.forest-endpoint {
+  box-shadow: inset 0 0 0 2px #e3b86e
+}
+
+.forest-tile.forest-cleared {
+  background: #476c5b;
+  box-shadow: inset 0 0 0 2px #f9dd8c, 0 0 12px #f9dd8c55
+}
+
+.forest-message {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 14px auto 0;
+  max-width: 540px;
+  color: #ebd6f5
+}
+
+.forest-win {
+  color: #ffdc91;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 12px auto
+}
+
+@media(max-width:520px) {
+  .forest-board-wrap {
+    gap: 3px
+  }
+
+  .forest-entrance,
+  .forest-exit {
+    font-size: 10px;
+    max-width: 34px;
+    white-space: normal
+  }
+
+  .forest-grid {
+    gap: 2px;
+    padding: 4px
+  }
+
+  .forest-tile {
+    border-radius: 4px
+  }
+
+  .forest-tile small {
+    font-size: 7px
+  }
+
+  .forest-intro p {
+    font-size: 12px
+  }
+}
+
+/* --- 입구와 실제로 연결된 타일을 표시 --- */
+.forest-tile.forest-reached {
+  background: linear-gradient(135deg, #486e4f, #345b43);
+  box-shadow: inset 0 0 0 1px #c4e9a2, 0 0 7px #a6f1b433
+}
+
+.forest-tile.forest-endpoint {
+  box-shadow: inset 0 0 0 2px #e3b86e
+}
+
+/* ============================================================================
+ * 13. 달빛 전망대 · 귀환의 룬
+ * ============================================================================ */
+
+.moon-game {
+  color: #f8f0ff;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 10px 0 18px;
+  font-family: inherit
+}
+
+.moon-game h3 {
+  color: #ffe3a0;
+  font-size: 1.3rem;
+  margin: 10px 0
+}
+
+.moon-game p {
+  line-height: 1.75;
+  margin: 8px 0
+}
+
+.moon-story-icon {
+  font-size: 2.5rem;
+  letter-spacing: .3em
+}
+
+.moon-seals {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0
+}
+
+.moon-seal {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 68px;
+  border: 2px solid #a17bcf;
+  border-radius: 13px;
+  background: #2d2048;
+  font-size: 2.3rem;
+  color: #d6bce8
+}
+
+.moon-seal.is-filled {
+  color: #ffdfa2;
+  box-shadow: 0 0 14px #e3b66b66;
+  border-color: #f3ce83
+}
+
+.moon-rune-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center
+}
+
+.moon-rune,
+.moon-controls button,
+.moon-finale-actions button,
+.moon-continue {
+  cursor: pointer;
+  border: 1px solid #a581d5;
+  border-radius: 10px;
+  background: #503274;
+  color: #fff2ff;
+  padding: 11px 15px;
+  font: inherit
+}
+
+.moon-rune {
+  font-size: 1.8rem;
+  min-width: 65px;
+  min-height: 63px
+}
+
+.moon-rune:disabled {
+  opacity: .35;
+  cursor: not-allowed
+}
+
+.moon-controls,
+.moon-finale-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 16px 0
+}
+
+.moon-game .moon-primary {
+  background: #8154bd;
+  border-color: #f3d99c;
+  font-weight: 700;
+  color: #fff7d9
+}
+
+.moon-game button:hover:not(:disabled) {
+  filter: brightness(1.18)
+}
+
+.moon-game button:focus-visible {
+  outline: 3px solid #fce3a0;
+  outline-offset: 3px
+}
+
+.moon-status {
+  min-height: 1.7em;
+  color: #ffe3a0;
+  font-weight: 700
+}
+
+.moon-hint {
+  font-size: .9rem;
+  opacity: .8
+}
+
+.moon-unlocked {
+  padding: 35px 12px
+}
+
+.moon-magic {
+  font-size: 2.5rem;
+  color: #ffe3a0;
+  text-shadow: 0 0 18px #ffe3a0;
+  animation: moonPulse 1.5s ease-in-out infinite alternate
+}
+
+.moon-shimmer {
+  font-size: 2rem;
+  animation: moonPulse 2s ease-in-out infinite alternate
+}
+
+.moon-ending-image {
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px solid #a882d7;
+  box-shadow: 0 8px 35px #0b061b88;
+  margin-bottom: 18px
+}
+
+.moon-illustration {
+  display: block;
+  width: 100%;
+  height: auto
+}
+
+.moon-announcement {
+  padding: 12px 18px;
+  background: #2b2045;
+  border: 1px solid #7d60a4;
+  border-radius: 14px
+}
+
+.moon-announcement-label {
+  color: #ffd997;
+  font-size: .88rem;
+  font-weight: 700
+}
+
+.moon-announcement strong {
+  display: block;
+  margin-top: 14px;
+  color: #ffe4a6
+}
+
+.moon-credit {
+  font-size: .78rem;
+  opacity: .7
+}
+
+@keyframes moonPulse {
+  from {
+    opacity: .65;
+    transform: scale(.98)
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.02)
+  }
+}
+
+@media(max-width:520px) {
+  .moon-seal {
+    width: 50px;
+    height: 56px;
+    font-size: 1.8rem
+  }
+
+  .moon-rune {
+    min-width: 48px;
+    min-height: 53px;
+    font-size: 1.5rem;
+    padding: 7px
+  }
+
+  .moon-game h3 {
+    font-size: 1.1rem
+  }
+
+  .moon-announcement {
+    padding: 10px
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+  .moon-magic,
+  .moon-shimmer {
+    animation: none
+  }
+}
+
+
+/* --- 14. 룬 탐험 수첩
+장소명과 힌트 내용을 별도 줄로 표시 --- */
+
+.modal_content:has(.rune-journal) {
+  width: min(960px, calc(100vw - 28px));
+  max-width: 960px;
+  box-sizing: border-box;
+}
+
+.modal_content:has(.rune-journal) #modalBody {
+  overflow-x: hidden;
+}
+
+.rune-journal {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  text-align: left;
+}
+
+.rune-journal>p {
+  margin: 0 0 4px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #e9dcf5;
+}
+
+.rune-journal .rune-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid #8060a5;
+  border-radius: 10px;
+  background: #302242;
+  text-align: left;
+}
+
+.rune-journal .rune-entry h3 {
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #ffe5a7;
+}
+
+.rune-journal .rune-entry p {
+  display: block;
+  width: 100%;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #f4eaff;
+  overflow-wrap: anywhere;
+}
+
+.rune-journal .rune-entry:not(.is-found) {
+  opacity: .65;
+}
+
+.rune-journal .rune-entry:not(.is-found) p {
+  color: #c9b7d9;
+}
+
+.rune-reward {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #b48cdb;
+  border-radius: 14px;
+  background: #39264f;
+  text-align: center;
+}
+
+.rune-reward h3 {
+  margin: 0;
+  font-size: 17px;
+  color: #ffe5a7;
+}
+
+.rune-reward-symbol {
+  font-size: 38px;
+  line-height: 1.4;
+  color: #f4d9ff;
+}
+
+.rune-reward strong {
+  font-size: 14px;
+  color: #fff;
+}
+
+.rune-reward p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: #f4eaff;
+}
+
+.rune-reward button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal_content:has(.rune-moon) {
+  max-width: 540px;
+}
+
+.rune-moon {
+  display: grid;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.rune-moon>p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #f4eaff;
+}
+
+.rune-inputs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rune-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 68px;
+  border: 2px solid #a27cc5;
+  border-radius: 12px;
+  background: #342344;
+  color: #f8e6ff;
+  font-size: 34px;
+}
+
+.rune-choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.rune-choices button {
+  min-height: 66px;
+  border: 2px solid #9561c6;
+  border-radius: 12px;
+  background: #59368a;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.rune-choices button:hover:not(:disabled) {
+  background: #7048a3;
+}
+
+.rune-choices button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+.rune-feedback {
+  min-height: 24px;
+  color: #ffe5a7 !important;
+}
+
+.rune-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rune-actions button {
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.rune-ending {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 20px 0;
+}
+
+.rune-ending-art {
+  font-size: 46px;
+}
+
+.rune-ending h3 {
+  margin: 0;
+  color: #ffe5a7;
+  font-size: 22px;
+}
+
+.rune-ending p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.9;
+  color: #f4eaff;
+}
+
+.rune-certificate-open {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.rune-certificate {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 20px 10px;
+  border: 2px solid #b48cdb;
+  border-radius: 14px;
+  background: #352447;
+}
+
+.rune-certificate-art {
+  font-size: 40px;
+}
+
+.rune-certificate h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #ffe5a7;
+}
+
+.rune-certificate p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #f4eaff;
+}
+
+.rune-certificate strong {
+  color: #ffe5a7;
+}
+
+.rune-print {
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: #8856bb;
+  color: #fff;
+  cursor: pointer;
+}
+
+.rune-reward button:focus-visible,
+.rune-choices button:focus-visible,
+.rune-actions button:focus-visible,
+.rune-certificate-open:focus-visible,
+.rune-print:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .rune-journal .rune-entry {
+    padding: 10px 12px;
+  }
+
+  .rune-journal .rune-entry h3 {
+    font-size: 13px;
+  }
+
+  .rune-journal .rune-entry p {
+    font-size: 12px;
+  }
+
+  .rune-slot {
+    min-height: 54px;
+    font-size: 27px;
+  }
+
+  .rune-choices button {
+    min-height: 56px;
+    font-size: 27px;
+  }
+
+  .rune-actions button {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================================
+ * 05. 검은 고양이의 쉼터 · 고양이 쓰다듬기
+ * ============================================================================ */
+
+.modal_content:has(.shelter-game) {
+  max-width: 560px;
+}
+
+.shelter-game {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.shelter-story,
+.shelter-guide {
+  margin: 0;
+  color: #f4eaff;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.shelter-guide {
+  color: #d5c4e7;
+  font-size: 12px;
+}
+
+.shelter-scene {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  overflow: hidden;
+  padding: 18px 14px 22px;
+  border: 2px solid #7954a5;
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 10%, #49345f, #241a39 75%);
+}
+
+.shelter-moon {
+  position: absolute;
+  top: 12px;
+  right: 22px;
+  font-size: 25px;
+}
+
+.shelter-cat {
+  position: relative;
+  width: min(100%, 280px);
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 180ms ease;
+}
+
+.shelter-cat:hover:not(:disabled) {
+  transform: translateY(-3px);
+}
+
+.shelter-cat:focus-visible,
+.shelter-pet-button:focus-visible,
+.shelter-restart:focus-visible {
+  outline: 3px solid #ffdc8c;
+  outline-offset: 3px;
+}
+
+.shelter-cat:disabled {
+  cursor: default;
+}
+
+.shelter-cat-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 9px rgba(0, 0, 0, .25));
+}
+
+.shelter-eyes-happy {
+  display: none;
+}
+
+.shelter-game.is-happy .shelter-eyes-open {
+  display: none;
+}
+
+.shelter-game.is-happy .shelter-eyes-happy {
+  display: inline;
+}
+
+.shelter-heart {
+  position: absolute;
+  top: 15%;
+  right: 12%;
+  opacity: 0;
+  pointer-events: none;
+  font-size: 30px;
+}
+
+.shelter-cat.is-petted .shelter-cat-art {
+  animation: shelterBounce 420ms ease;
+}
+
+.shelter-cat.is-petted .shelter-heart {
+  animation: shelterHeart 650ms ease-out;
+}
+
+.shelter-dialogue {
+  min-height: 50px;
+  margin: 0;
+  color: #ffdeef;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+.shelter-progress-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.shelter-progress {
+  overflow: hidden;
+  height: 14px;
+  border-radius: 99px;
+  background: #47365a;
+}
+
+.shelter-progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #b878bd, #f4a2c8);
+  transition: width 250ms ease;
+}
+
+.shelter-pet-button,
+.shelter-restart {
+  justify-self: center;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 12px;
+  background: #8856bb;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shelter-pet-button:hover,
+.shelter-restart:hover {
+  background: #9c6aca;
+}
+
+@keyframes shelterBounce {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.06) rotate(-2deg);
+  }
+
+  70% {
+    transform: scale(.98) rotate(2deg);
+  }
+}
+
+@keyframes shelterHeart {
+  0% {
+    opacity: 0;
+    transform: translateY(15px) scale(.5);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .shelter-cat.is-petted .shelter-cat-art,
+  .shelter-cat.is-petted .shelter-heart {
+    animation: none;
+  }
+}
+
+/* 달빛 전망대: 마지막 비행 엔딩 시퀀스 */
+.moon-cinematic { max-width: 760px; }
+.moon-cinema-scene { position: relative; overflow: hidden; height: clamp(240px, 49vw, 380px); border: 2px solid #a882d7; border-radius: 18px; background: radial-gradient(ellipse at 70% 25%, #65528c 0%, #34264f 45%, #15102b 100%); isolation: isolate; }
+.moon-cinema-stars { position: absolute; inset: 12% 0 auto; font-size: 2rem; letter-spacing: 1.2rem; color: #fff1bd; opacity: .8; }
+.moon-cinema-moon { position: absolute; width: 110px; height: 110px; right: 15%; top: 13%; border-radius: 50%; background: #fff2c5; box-shadow: 0 0 55px 20px #f6d7a744; }
+.moon-cinema-runes { position: absolute; z-index: 3; top: 36%; width: 100%; display: flex; justify-content: center; gap: clamp(12px, 4vw, 36px); font-size: clamp(2rem, 6vw, 3.5rem); color: #fff3c4; text-shadow: 0 0 20px #eac8ff; transition: opacity .9s, transform .9s; }
+.moon-cinema-runes span { animation: moonRuneGlow 1.2s ease-in-out infinite alternate; }
+.moon-cinema-runes span:nth-child(2) { animation-delay: .25s; }.moon-cinema-runes span:nth-child(3) { animation-delay: .5s; }.moon-cinema-runes span:nth-child(4) { animation-delay: .75s; }
+.moon-cinema-island { position: absolute; bottom: 0; width: 100%; height: 37%; background: linear-gradient(transparent, #241932 42%); display: flex; align-items: end; justify-content: space-around; padding-bottom: 20px; box-sizing: border-box; font-size: clamp(1.5rem, 5vw, 2.7rem); filter: brightness(.35); transition: filter 1.5s; }
+.moon-cinema-island span { transition: filter 1s, transform 1s; }.moon-cinema-island span:nth-child(even) { transform: translateY(-10px); }
+.moon-cinema-flight { position: absolute; z-index: 4; left: -55%; top: 38%; white-space: nowrap; font-size: clamp(3rem, 9vw, 5rem); color: #fff9e6; text-shadow: 0 0 18px #f9e8ff; }
+.moon-cinema-trail { font-size: 1.4rem; color: #ffe5ac; }
+.phase-island .moon-cinema-runes, .phase-flight .moon-cinema-runes, .phase-goodbye .moon-cinema-runes { opacity: 0; transform: translateY(-45px) scale(1.3); }
+.phase-island .moon-cinema-island, .phase-flight .moon-cinema-island, .phase-goodbye .moon-cinema-island { filter: brightness(1) drop-shadow(0 0 13px #f7cb8d); }
+.phase-flight .moon-cinema-flight, .phase-goodbye .moon-cinema-flight { animation: moonFlyAcross 4.3s ease-in-out forwards; }
+.moon-cinema-caption { min-height: 3em; font-weight: 700; color: #ffe4a6; }
+.moon-cinema-skip { background: transparent; color: #e6d5ff; border: 1px solid #a882d7; border-radius: 12px; padding: 9px 16px; cursor: pointer; }
+.moon-cinema-skip:hover, .moon-cinema-skip:focus-visible { background: #463360; }
+@keyframes moonRuneGlow { from { opacity: .55; text-shadow: 0 0 5px #eac8ff; } to { opacity: 1; text-shadow: 0 0 30px #fff1b0; } }
+@keyframes moonFlyAcross { from { left: -55%; transform: translateY(35px) rotate(-8deg); } to { left: 115%; transform: translateY(-65px) rotate(-8deg); } }
+@media (prefers-reduced-motion: reduce) { .moon-cinema-runes span, .phase-flight .moon-cinema-flight, .phase-goodbye .moon-cinema-flight { animation: none; } .moon-cinema-runes, .moon-cinema-island { transition: none; } }
+
+
+/* Halloween Cake House: fixed-placement arcade table */
+.cake-house{max-width:760px;margin:0 auto;color:#fff4ff;font-family:inherit}
+.cake-topline{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:900;font-size:14px;color:#ffe9a8;text-shadow:0 2px #4c245e}
+.cake-guide{font-size:13px;line-height:1.5;color:#e8dcff;margin:10px 0}
+.cake-table{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;padding:17px 14px;border-radius:25px;background:linear-gradient(145deg,#b8a1ff,#8c74d5);box-shadow:inset 0 -9px #7660b5,0 12px 0 #503e71,0 18px 24px #140e2780;max-width:420px;margin:14px auto 26px}
+.cake-slot{aspect-ratio:1;border:0;border-radius:50%;background:#8872ca;box-shadow:inset 0 5px 6px #6553a77d;display:grid;place-items:center;position:relative;cursor:pointer;padding:3px;min-width:0}
+.cake-slot.occupied{background:#f3e9ff;box-shadow:0 2px 5px #58458a}
+.cake-slot.complete{outline:3px solid #ffd46d;box-shadow:0 0 14px #ffeaa4}
+.cake-plate{position:relative;width:96%;aspect-ratio:1;border-radius:50%;background:#f9f4ff;border:2px solid #e7b76c;overflow:hidden}
+.cake-wedge{position:absolute;inset:0;clip-path:polygon(50% 50%,50% 0,93.3% 75%);transform:rotate(var(--turn));transform-origin:center}
+.cake-wedge img,.cake-wedge .cake-emoji{position:absolute;inset:7%;width:86%;height:86%;object-fit:contain;transform:rotate(calc(-1 * var(--turn)));font-size:27px;text-align:center}
+.cake-bottom-title{text-align:center;font-weight:800;color:#ffe3a4;margin:8px 0}
+.cake-tray{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:12px;border-radius:22px;background:#66517c88}
+.cake-offer{min-width:0;aspect-ratio:1;background:transparent;border:2px solid transparent;border-radius:16px;cursor:pointer;padding:2px;transition:transform .15s}
+.cake-offer.selected{border-color:#ffd56e;transform:translateY(-7px);background:#ffe3a42a}
+.cake-offer-plate{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#f8f1ff;border:3px solid #d6b47a;box-shadow:0 4px 0 #48334f}
+.cake-offer img{width:92%;height:92%;object-fit:contain}
+.cake-emoji{font-size:28px}
+.cake-message{min-height:44px;margin:14px 0 6px;text-align:center;font-size:13px;line-height:1.5}
+.cake-actions{text-align:center}
+.cake-restart{border:1px solid #f1d3ff;border-radius:12px;background:#6745a5;color:white;padding:9px 16px;cursor:pointer;font-weight:800}
+.cake-end{text-align:center;margin:12px 0;padding:14px;border-radius:15px;background:#7451a9}
+@media(max-width:480px){.cake-table{gap:6px;padding:12px 9px}.cake-tray{gap:3px;padding:7px}.cake-topline{font-size:12px}.cake-guide{font-size:12px}}
+
+/* Cake House: circular slots, partial progress, full-cake swap */
+.cake-table{width:min(100%,420px);box-sizing:border-box;grid-template-rows:repeat(5,minmax(0,1fr));}
+.cake-slot{width:100%;height:auto;min-width:0;min-height:0;aspect-ratio:1/1;align-self:center;justify-self:center;box-sizing:border-box;overflow:visible;}
+.cake-slot.occupied{background:#f9f3ff;}
+.cake-partial,.cake-whole{position:relative;display:grid;place-items:center;width:100%;height:100%;aspect-ratio:1/1;border-radius:50%;background:#fff8ff;border:2px solid #e8bb68;box-sizing:border-box;overflow:hidden;}
+.cake-partial img,.cake-whole-image{display:block;width:90%;height:90%;object-fit:contain;}
+.cake-partial .cake-emoji{font-size:clamp(16px,3vw,28px);}
+.cake-count{position:absolute;right:1px;bottom:1px;padding:1px 4px;border-radius:10px;background:#4e2e78;color:#fff;font-size:10px;font-weight:900;}
+.cake-slot.complete .cake-whole{animation:cakePop .48s cubic-bezier(.2,1.5,.4,1) both;}
+.cake-slot.complete{animation:cakeGlow .9s ease-in-out 2;}
+.cake-complete-star{position:absolute;top:-7px;right:-5px;color:#ffe078;font-size:19px;text-shadow:0 1px 3px #51317b;pointer-events:none;}
+.cake-whole-fallback{font-size:clamp(14px,2.5vw,24px);}
+@keyframes cakePop{from{opacity:.3;transform:scale(.65) rotate(-9deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes cakeGlow{50%{box-shadow:0 0 22px #ffe997;outline-color:#fff2a0}}
+@media(prefers-reduced-motion:reduce){.cake-slot.complete,.cake-slot.complete .cake-whole{animation:none}}
+
+/* Cake count: centered watermark on partial cakes */
+.cake-partial .cake-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: clamp(16px, 3vw, 25px);
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: -2px -2px 0 #40245f, 2px -2px 0 #40245f, -2px 2px 0 #40245f, 2px 2px 0 #40245f, 0 3px 5px rgba(0,0,0,.6);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Stage 01 — illustration on modal content, translucent navy on game UI */
+.modal_content:has(#modalBody .candy-game) {
+  background-image: url('../assets/images/candy/candy_background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Stage 01 — Sweet Lounge arcade visual assets */
+.modal_content:has(.candy-game){max-width:650px}
+.candy-game{position:relative;isolation:isolate;overflow:hidden;padding:18px;border:2px solid #b877dd;border-radius:22px;background:rgba(29,25,53,.84);box-shadow:inset 0 0 35px #f4bfff20,0 12px 30px #0005}
+.candy-game:before{content:'';position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 18%,transparent 0%,#180b2b55 90%)}
+.candy-story{padding:10px 12px;border-radius:12px;background:#211135c9;text-align:center;font-weight:600}
+.candy-status{color:#ffe7a5;text-shadow:0 2px 4px #170e29}
+.candy-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:500px;width:100%;margin:0 auto}
+.candy-card{position:relative;display:grid;place-items:center;min-width:0;min-height:0;aspect-ratio:3/4;overflow:hidden;border:2px solid #e5b05d;border-radius:13px;background:linear-gradient(145deg,#6d3f99,#29163f);box-shadow:0 4px 0 #170c2b,0 5px 12px #1009229c;padding:5px;transition:transform .15s,filter .15s}
+.candy-card:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.1)}
+.candy-card.is-open,.candy-card.is-matched{background:#241338;border-color:#ffda85}
+.candy-card.is-matched{border-color:#b8ef9c;box-shadow:0 0 13px #a5ff8d88}
+.candy-card-art{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none}
+.candy-card-back{display:grid;place-items:center;width:88%;height:92%;border:2px solid #c38be2;border-radius:9px;background:radial-gradient(circle at 50% 40%,#9d5ed0,#4e277d 70%);color:#ffe8a3;font-size:clamp(28px,6vw,58px);text-shadow:0 0 14px #ffe7b0}
+.candy-message{padding:8px 10px;background:#241235c9;border-radius:10px;text-align:center}
+.candy-actions button{background:linear-gradient(#ad69d6,#6f379c);border:1px solid #e9bbf7}
+@media(max-width:480px){.candy-game{padding:10px;gap:10px}.candy-grid{gap:6px}.candy-card{padding:2px;border-radius:9px}.candy-story{font-size:12px;line-height:1.5}}
+@media(prefers-reduced-motion:reduce){.candy-card{transition:none}}
+
+/* Stage 02 — Burning Cave illustration layer */
+/* Stage 02: illustration on modal, solid navy on the game section */
+.modal_content:has(#modalBody .cave-game) {
+  background-image: linear-gradient(rgba(20, 12, 34, .35), rgba(20, 12, 34, .55)), url('../assets/images/cave/cave_background.png');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.cave-game {position:relative;isolation:isolate;overflow:hidden;padding:16px;border-radius:20px;background:rgba(29,25,53,.84);border:2px solid #c65c39;}
+.cave-grid{width:100%;max-width:510px;margin-inline:auto;}
+.cave-cell{display:grid;place-items:center;position:relative;overflow:hidden;line-height:1;box-sizing:border-box;}
+.cave-sprite{display:grid;place-items:center;width:100%;height:100%;min-width:0;min-height:0;pointer-events:none;}
+.cave-sprite img{display:block;width:85%;height:85%;object-fit:contain;filter:drop-shadow(0 2px 2px #210c18a0);}
+.cave-sprite img[hidden],.cave-fallback[hidden]{display:none!important;}
+.cave-fallback{font-size:clamp(19px,4vw,32px);}
+.cave-player .cave-sprite img{width:96%;height:96%;}
+.cave-exit{font-size:clamp(19px,4vw,32px);}
+@media(max-width:480px){.cave-game{padding:10px}.cave-grid{gap:4px}.cave-cell{border-width:1px;border-radius:7px}}
+
+/* Stage 03 — Potion shop illustration integration */
+.potion-game {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(29, 25, 53, 0.84);
+  border: 2px solid rgba(180, 137, 221, 0.7);
+}
+.potion-cauldron {
+  min-height: 190px;
+  background: rgba(46, 20, 71, .4);
+  overflow: hidden;
+}
+.potion-cauldron-art {
+  display: block;
+  width: min(100%, 260px);
+  height: 175px;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 12px rgba(20, 4, 36, .4));
+}
+.potion-cauldron.is-complete { background: rgba(81, 38, 95, .5); }
+@media (max-width: 480px) {
+  .potion-game { padding: 10px; }
+  .potion-cauldron { min-height: 155px; }
+  .potion-cauldron-art { height: 145px; }
+}
+
+
+/* Stage 04 — illustrated houses (other stages remain unchanged) */
+.treat-house-art{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;filter:drop-shadow(0 3px 3px #10091c70)}
+.treat-house-art.is-unknown{filter:grayscale(1) brightness(.65) drop-shadow(0 3px 3px #10091c70);opacity:.82}
+.treat-house{justify-content:flex-start}
+.treat-house-number{margin-bottom:2px}
+.treat-house-label,.treat-house-resident{margin-top:4px}
+.treat-new-puzzle{background:#6940a0!important}
+@media(max-width:480px){.treat-house-art{aspect-ratio:4/5}.treat-house{padding:5px 2px}}
+
+
+/* Stage 04 — Trick or Treat street background illustration */
+.treat-game {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 18px;
+  border: 2px solid #9d70c8;
+  border-radius: 20px;
+  background: rgba(29, 25, 53, 0.84);
+}
+@media (max-width: 480px) {
+  .treat-game { padding: 10px; }
+}
+
+
+/* ============================================================================
+ * Stage 05 illustration integration — appended without altering earlier CSS
+ * ============================================================================ */
+.shelter-scene {
+  isolation: isolate;
+  min-height: 340px;
+  background-image:
+    linear-gradient(180deg, rgba(26, 14, 45, .18), rgba(26, 14, 45, .62)),
+    url("../assets/images/shelter/shelter_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.shelter-scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 56%, rgba(29, 13, 49, .32), transparent 65%);
+  pointer-events: none;
+}
+.shelter-cat {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: min(100%, 290px);
+  min-height: 255px;
+}
+.shelter-cat-art {
+  display: block;
+  width: 100%;
+  height: 265px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .52));
+}
+.shelter-dialogue {
+  position: relative;
+  z-index: 1;
+  padding: 7px 12px;
+  border-radius: 12px;
+  background: rgba(31, 17, 49, .76);
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .5);
+}
+@media (max-width: 480px) {
+  .shelter-scene { min-height: 300px; padding: 12px 8px 16px; }
+  .shelter-cat { min-height: 220px; width: min(100%, 245px); }
+  .shelter-cat-art { height: 230px; }
+}
+
+/* Stage 03 — illustration behind the translucent game UI */
+#modalBody:has(> .potion-game) {
+  background-image: url("../assets/images/potion/potion_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+
+/* Stage 04 — illustration on modal body, translucent navy game UI */
+#modalBody:has(> .treat-game) {
+  background-image: url("../assets/images/treat/treat_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* Stage 05: only the 3rd (purr) and 4th (happy) cat illustrations sit lower. */
+.shelter-cat-art[src$="/cat_purr.png"],
+.shelter-cat-art[src$="/cat_happy.png"] {
+  transform: translateY(12px);
+}
+
+
+/* ==========================================================================
+   ALL 13 STAGES: consistent modal illustration + 84% navy game surface
+   Background files for stages 06-13 must be supplied at the paths below.
+   ========================================================================== */
+
+/* CANDY */
+.modal_content:has(#modalBody .candy-game) {
+  background-image: url("../assets/images/candy/candy_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* CAVE */
+.modal_content:has(#modalBody .cave-game) {
+  background-image: url("../assets/images/cave/cave_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* POTION */
+.modal_content:has(#modalBody .potion-game) {
+  background-image: url("../assets/images/potion/potion_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* TREAT */
+.modal_content:has(#modalBody .treat-game) {
+  background-image: url("../assets/images/treat/treat_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* SHELTER */
+.modal_content:has(#modalBody .shelter-game) {
+  background-image: url("../assets/images/shelter/shelter_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* CAKE */
+.modal_content:has(#modalBody .cake-game) {
+  background-image: url("../assets/images/cake/cake_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* HUT */
+.modal_content:has(#modalBody .hut-game) {
+  background-image: url("../assets/images/hut/hut_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* BROOM */
+.modal_content:has(#modalBody .broom-game) {
+  background-image: url("../assets/images/broom/broom_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* KITCHEN */
+.modal_content:has(#modalBody .kitchen-game) {
+  background-image: url("../assets/images/kitchen/kitchen_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* HAT */
+.modal_content:has(#modalBody .hat-game) {
+  background-image: url("../assets/images/hat/hat_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* GHOST */
+.modal_content:has(#modalBody .ghost-game) {
+  background-image: url("../assets/images/ghost/ghost_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* FOREST */
+.modal_content:has(#modalBody .forest-game) {
+  background-image: url("../assets/images/forest/forest_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* MOON */
+.modal_content:has(#modalBody .moon-game) {
+  background-image: url("../assets/images/moon/moon_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#modalBody > .candy-game,
+#modalBody > .cave-game,
+#modalBody > .potion-game,
+#modalBody > .treat-game,
+#modalBody > .shelter-game,
+#modalBody > .cake-game,
+#modalBody > .hut-game,
+#modalBody > .broom-game,
+#modalBody > .kitchen-game,
+#modalBody > .hat-game,
+#modalBody > .ghost-game,
+#modalBody > .forest-game,
+#modalBody > .moon-game {
+  background: rgba(29, 25, 53, 0.84);
+  border-radius: 18px;
+  padding: 16px;
+  isolation: isolate;
+}
+
+/* Remove stage 03/04 artwork from the body; it now belongs to modal_content. */
+#modalBody:has(> .potion-game),
+#modalBody:has(> .treat-game) {
+  background-image: none;
+}
+
+/* Stage 05: preserve cat illustrations; do not duplicate scene artwork. */
+#modalBody > .shelter-game .shelter-scene {
+  background-image: none;
+}
+
+
+/* All stages: soft highlight behind the modal title only. */
+.modal_content:has(#modalBody > section) #modalTitle {
+  display: table;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: rgba(29, 25, 53, 0.78);
+  box-shadow: 0 3px 14px rgba(10, 8, 25, 0.22);
+  text-align: center;
+}
+
+
+/* ================================================================
+   Stage 06 — Cake House: compact 3 x 2 table and pastel party art
+   Other stages remain unchanged.
+   ================================================================ */
+.modal_content:has(#modalBody .cake-house) {
+  max-width: 760px;
+  background-image: url("../assets/images/cake/cake_background.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#modalBody:has(.cake-house) {
+  background: transparent;
+}
+#modalBody .cake-house {
+  box-sizing: border-box;
+  max-width: 590px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid rgba(244, 195, 237, .62);
+  border-radius: 20px;
+  background: rgba(29, 25, 53, .84);
+  box-shadow: 0 12px 32px rgba(18, 9, 33, .35);
+}
+#modalBody .cake-table {
+  width: min(100%, 340px);
+  max-width: 340px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+  margin: 14px auto 22px;
+}
+#modalBody .cake-slot {
+  aspect-ratio: 1;
+}
+@media (max-width: 480px) {
+  #modalBody .cake-house { padding: 12px; }
+  #modalBody .cake-table { width: min(100%, 300px); gap: 8px; padding: 12px; }
+}
+
+/* ==============================================================
+   Stage 07 — Witch Hut illustrations and completion-only sigil
+   Keep the common 84%-opaque navy UI and modal artwork convention.
+   ============================================================== */
+.modal_content:has(#modalBody .hut-game) {
+  background-image: url("../assets/images/hut/hut_background.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody > .hut-game {
+  background: rgba(29, 25, 53, 0.84);
+  border-radius: 18px;
+  padding: 16px;
+}
+#modalBody .hut-board { position: relative; isolation: isolate; }
+#modalBody .hut-board::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: url("../assets/images/hut/magic_circle.png") center / min(72%, 330px) no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s ease;
+  z-index: 2;
+}
+#modalBody .hut-game.hut-complete .hut-board::after { opacity: 0.19; }
+
+/* Stage 08 — keep the agreed shared modal background and translucent UI */
+.modal_content:has(#modalBody .broom-game) {
+  background-image: url("../assets/images/broom/broom_background.png") !important;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody > .broom-game {
+  background: rgba(29, 25, 53, 0.84) !important;
+  border-radius: 18px;
+  padding: 16px;
+}
+#modalBody .broom-canvas-wrap {
+  background: rgba(20, 13, 39, 0.15);
+}
+
+/* Stage 09 — witch's kitchen: stage-only illustrated modal and translucent UI */
+.modal_content:has(#modalBody .kitchen-game) {
+  background-image: url("../assets/images/kitchen/kitchen_background.png") !important;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody .kitchen-game {
+  background: rgba(29, 25, 53, 0.84) !important;
+  border-radius: 18px;
+  padding: 16px;
+}
+#modalBody .kitchen-art {
+  display: inline-block;
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  vertical-align: middle;
+  pointer-events: none;
+}
+#modalBody .kitchen-order-icon .kitchen-art { width: 72px; height: 62px; }
+#modalBody .kitchen-ingredient .kitchen-art { width: 54px; height: 54px; }
+#modalBody .kitchen-prepared .kitchen-art { width: 32px; height: 32px; }
+#modalBody .kitchen-pot-icon .kitchen-art { width: 116px; height: 94px; }
+#modalBody .kitchen-pot.is-burnt .kitchen-pot-icon .kitchen-art { filter: grayscale(.8) brightness(.65); }
+
+/* Stage 09 layout fix: wider modal only for the kitchen stage. */
+.modal_content:has(#modalBody .kitchen-game) {
+  box-sizing: border-box;
+  width: min(920px, calc(100vw - 32px)) !important;
+  max-width: min(920px, calc(100vw - 32px)) !important;
+}
+#modalBody .kitchen-game {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+}
+@media (max-width: 640px) {
+  .modal_content:has(#modalBody .kitchen-game) {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+  #modalBody .kitchen-game { padding: 12px; }
+}
+
+/* Stage 10 — illustrated hat shuffle, scoped to this game only */
+.modal_content:has(#modalBody .hat-game) {
+  background-image: url("../assets/images/hat/hat_background.png") !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody .hat-game {
+  background: rgba(29, 25, 53, 0.84) !important;
+  border-radius: 18px;
+  padding: 16px;
+}
+#modalBody .hat-arena { height: 180px; }
+#modalBody .hat-cup {
+  height: 160px;
+  width: min(18%, 108px);
+  overflow: visible;
+}
+#modalBody .hat-icon {
+  display: block;
+  width: 100%;
+  height: 106px;
+  position: relative;
+  z-index: 2;
+  transition: transform .2s ease;
+}
+#modalBody .hat-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+#modalBody .hat-orb {
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+#modalBody .hat-orb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#modalBody .hat-cup.is-revealed .hat-icon { transform: translateY(-35px); }
+#modalBody .hat-cup.is-revealed .hat-orb { opacity: 1; }
+@media (max-width: 520px) {
+  #modalBody .hat-arena { height: 135px; }
+  #modalBody .hat-cup { height: 120px; }
+  #modalBody .hat-icon { height: 78px; }
+  #modalBody .hat-orb { width: 38px; height: 38px; bottom: 5px; }
+  #modalBody .hat-cup.is-revealed .hat-icon { transform: translateY(-27px); }
+}
+
+/* Stage 11 only: illustrated pond with 84%-opaque navy game panel */
+.modal_content:has(#modalBody .ghost-game) {
+  box-sizing: border-box;
+  width: min(900px, calc(100vw - 32px)) !important;
+  max-width: min(900px, calc(100vw - 32px)) !important;
+  background-image: url("../assets/images/ghost/ghost_background.png") !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody .ghost-game {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 850px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(29, 25, 53, 0.84) !important;
+}
+#modalBody .ghost-pond { background: linear-gradient(180deg,rgba(40,28,77,.72),rgba(27,65,113,.7)); }
+#modalBody .ghost-figure, #modalBody .ghost-reflection { max-width: 120px; }
+#modalBody .ghost-art { display:block; position:relative; width:100%; height:100%; }
+#modalBody .ghost-sprite { display:block; width:100%; height:100%; object-fit:contain; }
+#modalBody .ghost-art-reflected { transform:scaleY(-1); opacity:.83; }
+#modalBody .ghost-art-reflected .ghost-sprite { filter:inherit; }
+#modalBody .ghost-variant-accessory {
+  position:absolute; top:6%; right:4%; font-size:clamp(13px,2.2vw,23px);
+  filter:drop-shadow(0 1px 2px #241340);
+}
+#modalBody .ghost-variant-expression {
+  position:absolute; left:42%; top:39%; font-size:clamp(15px,2.4vw,25px);
+  line-height:1; background:rgba(255,255,255,.7); border-radius:50%;
+}
+@media(max-width:640px) {
+  .modal_content:has(#modalBody .ghost-game) {
+    width:calc(100vw - 20px) !important; max-width:calc(100vw - 20px) !important;
+  }
+  #modalBody .ghost-game { padding:10px 6px; }
+  #modalBody .ghost-variant-accessory { font-size:12px; }
+  #modalBody .ghost-variant-expression { font-size:12px; }
+}
+
+/* Stage 08 only — enlarged desktop modal and legible flight sprites */
+.modal_content:has(#modalBody .broom-game) {
+  box-sizing: border-box;
+  width: min(900px, calc(100vw - 32px)) !important;
+  max-width: min(900px, calc(100vw - 32px)) !important;
+  background-image: url("../assets/images/broom/broom_background.png") !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#modalBody > .broom-game {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 850px;
+  margin-inline: auto;
+  background: rgba(29, 25, 53, 0.84) !important;
+}
+#modalBody .broom-canvas-wrap {
+  width: 100%;
+  max-width: 790px;
+  margin-inline: auto;
+}
+#modalBody .broom-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+}
+@media (max-width: 640px) {
+  .modal_content:has(#modalBody .broom-game) {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+  #modalBody > .broom-game { padding: 12px; }
+}
+
+/* Stage 11 — use actual original/variant PNGs, not emoji overlays or hue filters. */
+#modalBody .ghost-art .ghost-variant-accessory,
+#modalBody .ghost-art .ghost-variant-expression { display: none !important; }
+#modalBody .ghost-art { position: relative; display: block; width: 100%; height: 100%; }
+#modalBody .ghost-art .ghost-sprite {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  filter: none; pointer-events: none;
+}
+#modalBody .ghost-art-reflected { transform: scaleY(-1); opacity: .88; }
+
+/* ============================================================================
+ * Stage 12: 유령의 나무숲 — illustrated rotation puzzle, stage-scoped only.
+ * Keep earlier stage CSS intact. Tile assets are all square 256x256 PNGs.
+ * ============================================================================ */
+.modal_content:has(#modalBody .forest-game) {
+  box-sizing: border-box;
+  width: min(850px, calc(100vw - 32px)) !important;
+  max-width: min(850px, calc(100vw - 32px)) !important;
+  background-image: url("../assets/images/forest/forest_background.png") !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+#modalBody .forest-game {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 18px 16px;
+  border: 1px solid rgba(190, 148, 235, .35);
+  border-radius: 18px;
+  background: rgba(29, 25, 53, .84) !important;
+}
+#modalBody .forest-toolbar { max-width: 580px; }
+#modalBody .forest-grid {
+  width: min(100%, 540px);
+  aspect-ratio: 1;
+  gap: 3px;
+  padding: 7px;
+  background: rgba(15, 28, 33, .74);
+  border-color: rgba(183, 149, 225, .8);
+}
+#modalBody .forest-tile {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(134, 184, 130, .45);
+  border-radius: 7px;
+  background: rgba(11, 36, 32, .75);
+  line-height: 0;
+}
+#modalBody .forest-path-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center center;
+  pointer-events: none;
+  user-select: none;
+}
+/* The endpoint signs stay upright even when the road underneath rotates. */
+#modalBody .forest-marker-art {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: none;
+  pointer-events: none;
+  user-select: none;
+}
+#modalBody .forest-tile.forest-reached {
+  background: rgba(62, 123, 94, .55);
+  box-shadow: inset 0 0 0 2px rgba(174, 255, 181, .55), 0 0 9px rgba(120, 255, 169, .25);
+}
+#modalBody .forest-tile.forest-cleared {
+  background: rgba(72, 128, 90, .65);
+  box-shadow: inset 0 0 0 2px #ffe6a1, 0 0 13px rgba(255, 225, 131, .6);
+}
+#modalBody .forest-tile:focus-visible {
+  outline: 3px solid #ffe7a5;
+  outline-offset: -3px;
+}
+@media (max-width: 640px) {
+  .modal_content:has(#modalBody .forest-game) {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+  #modalBody .forest-game { padding: 12px 6px; }
+  #modalBody .forest-grid { gap: 2px; padding: 4px; }
+  #modalBody .forest-marker-art { width: 100%; height: 100%; }
+}
+
+/* Stage 13 · Moon observatory and Mitta Air finale (all styles stage-scoped). */
+.modal_content:has(#modalBody .moon-game){box-sizing:border-box;width:min(980px,calc(100vw - 24px))!important;max-width:min(980px,calc(100vw - 24px))!important;background:url('../assets/images/moon/moon_background.png') center/cover no-repeat!important;}
+#modalBody .moon-game{box-sizing:border-box;max-width:920px;margin:auto;padding:18px;border-radius:18px;background:rgba(29,25,53,.84)!important;color:#f8edff;text-align:center;}
+#modalBody .moon-heading h3{margin:0 0 7px;color:#ffe6a2}#modalBody .moon-heading p{margin:0 0 12px}
+#modalBody .moon-altar-wrap{position:relative;width:min(100%,510px);aspect-ratio:1.2;margin:0 auto;filter:drop-shadow(0 0 15px rgba(205,147,255,.3));}
+#modalBody .moon-altar-idle,#modalBody .moon-altar-active{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+#modalBody .moon-altar-active{opacity:0;transition:opacity 1s;filter:drop-shadow(0 0 25px #f9c4ff)}#modalBody .moon-altar-wrap.activated .moon-altar-active{opacity:1;animation:moon-pulse 1.8s ease-in-out infinite alternate}
+#modalBody .moon-sockets{position:absolute;inset:0;pointer-events:none}
+#modalBody .moon-socket{position:absolute;pointer-events:auto;display:grid;place-items:center;width:20%;height:23%;padding:0;border:0;border-radius:50%;background:rgba(26,13,61,.22);color:#ffebc5;cursor:pointer;transform:translate(-50%,-50%)}
+#modalBody .moon-socket:nth-child(1){left:50%;top:17%}#modalBody .moon-socket:nth-child(2){left:77%;top:33%}#modalBody .moon-socket:nth-child(3){left:77%;top:70%}#modalBody .moon-socket:nth-child(4){left:50%;top:85%}#modalBody .moon-socket:nth-child(5){left:23%;top:70%}#modalBody .moon-socket:nth-child(6){left:23%;top:33%}
+#modalBody .moon-socket img{width:90%;height:90%;object-fit:contain;filter:drop-shadow(0 0 6px #f4c4ff)}#modalBody .moon-socket span{font-size:clamp(18px,3vw,32px);opacity:.55}
+#modalBody .moon-rune-picker{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;max-width:650px;margin:12px auto}
+#modalBody .moon-rune-choice{min-width:0;padding:5px 2px;border:1px solid #9575c3;border-radius:12px;background:rgba(44,30,79,.85);color:#ffe6b1;cursor:pointer}
+#modalBody .moon-rune-choice img{display:block;width:100%;height:74px;object-fit:contain}#modalBody .moon-rune-choice span{font-size:12px}#modalBody .moon-rune-choice:disabled{opacity:.35;cursor:default}
+#modalBody .moon-controls{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-top:12px}#modalBody .moon-controls button,#modalBody .moon-skip,#modalBody .moon-embedded-certificate button{padding:10px 14px;border-radius:10px;border:1px solid #ab88d2;background:#423064;color:#fff0ff;cursor:pointer}
+#modalBody .moon-controls .moon-primary,#modalBody .moon-embedded-certificate .moon-primary{background:#7652a6;border-color:#d9b5ff;color:#fff}
+#modalBody .moon-status{min-height:24px;color:#ffe6aa;font-weight:600}#modalBody .moon-altar-wrap.moon-error{animation:moon-shake .4s}
+#modalBody .moon-cinematic{padding:14px}#modalBody .moon-scene{position:relative;overflow:hidden;width:100%;aspect-ratio:16/9;border-radius:15px;background-position:center;background-size:cover}
+#modalBody .moon-island{background-image:url('../assets/images/halloween_map.jpg')}
+#modalBody .moon-boarding{background-image:url('../assets/images/mittaair_side.png')}
+#modalBody .moon-flight{background:#161235;isolation:isolate}#modalBody .moon-flight-picture{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;max-width:none;transform:translateX(-6%) scale(1.16);transform-origin:center;animation:moon-flight-scene-pan 4.2s linear forwards;filter:none} @keyframes moon-flight-scene-pan{from{transform:translateX(-6%) scale(1.16)}to{transform:translateX(6%) scale(1.16)}}
+#modalBody .moon-sky-dust{position:absolute;inset:0;overflow:hidden;pointer-events:none}#modalBody .moon-particle{position:absolute;top:-10%;width:7px;height:7px;border-radius:50%;background:#ffe7a3;box-shadow:0 0 12px 4px #f2baff;animation:moon-fall 5s linear infinite}
+#modalBody .moon-scene-title{position:absolute;bottom:9%;width:100%;font-weight:700;color:#fff2c7;text-shadow:0 2px 12px #321a56;font-size:clamp(17px,3vw,29px)}
+#modalBody .moon-cinema-caption{margin:12px 0;color:#ffdfaa;font-size:16px}
+#modalBody .moon-finale-sky{position:relative;overflow:hidden;width:100%;aspect-ratio:16/7;background:linear-gradient(#131440,#8860ae);border-radius:14px}
+#modalBody .moon-finale-plane{display:block;position:absolute;inset:0;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;animation:none;filter:none}
+#modalBody .moon-finale-cloud{position:absolute;inset:0;background:radial-gradient(ellipse 28% 18% at 15% 83%,rgba(255,235,255,.3),transparent),radial-gradient(ellipse 28% 17% at 83% 22%,rgba(222,212,255,.25),transparent);opacity:.65;animation:moon-drift 16s linear infinite;pointer-events:none}
+#modalBody .moon-announcement{max-width:690px;margin:16px auto;line-height:1.8}#modalBody .moon-announcement h3{color:#ffe5a1}#modalBody .moon-announcement-label{font-size:12px;letter-spacing:.08em;color:#dfc4ff}
+#modalBody .moon-embedded-certificate{margin:20px auto 0;max-width:600px;padding:20px;border:3px double #e2bb79;border-radius:14px;background:linear-gradient(120deg,#fff5e4,#f0e1ff);color:#4b326a;box-shadow:0 8px 25px #140c2d}
+#modalBody .moon-embedded-certificate h3{color:#63428a}
+@keyframes moon-fall{from{transform:translateY(-20px) rotate(0);opacity:0}20%{opacity:1}to{transform:translate(50px,600px) rotate(220deg);opacity:0}}
+@keyframes moon-pulse{to{filter:drop-shadow(0 0 35px #fff4a4);opacity:.8}}
+@keyframes moon-shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes moon-fly{to{left:110%;top:5%}}@keyframes moon-float{50%{transform:translate(4%,-6%)}}@keyframes moon-drift{50%{background-position:80px 0}}
+@media(max-width:640px){#modalBody .moon-game{padding:10px 6px}#modalBody .moon-rune-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}#modalBody .moon-rune-choice img{height:57px}#modalBody .moon-controls button{font-size:12px;padding:8px}}
+@media(prefers-reduced-motion:reduce){#modalBody .moon-game *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* Stage 13: 미타에어 기내 엔딩 장면 */
+#modalBody .moon-flight .moon-cabin-picture {
+  transform: none;
+  object-fit: cover;
+  object-position: center center;
+  animation: moon-cabin-arrive 4.2s ease-out both;
+}
+@keyframes moon-cabin-arrive {
+  from { transform: scale(1.045); opacity: .65; }
+  to { transform: scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #modalBody .moon-flight .moon-cabin-picture { animation: none; }
+}
+
+/* 엔딩 장면 이미지 경로 복구: 할로윈섬 → 탑승 → 기내 */
+#modalBody .moon-scene.moon-island {
+ background-image: url('../assets/images/halloween_island_isometric.png') !important;
+ background-size: contain; background-repeat: no-repeat; background-position: center;
+ background-color: #15102e;
+}
+#modalBody .moon-scene.moon-boarding {
+ background-image: url('../assets/images/mittaair_side.png') !important;
+ background-size: cover; background-position: center;
+}
+
+
+/* Boarding pass certificate: isolated from all stage-specific layouts */
+.modal_content:has(#modalBody .mitta-pass-area){width:min(1060px,calc(100vw - 24px))!important;max-width:min(1060px,calc(100vw - 24px))!important}
+#modalBody .mitta-pass-area{padding:10px 0 4px}
+#modalBody .mitta-boarding-pass{display:grid;grid-template-columns:minmax(0,1fr) 215px;max-width:970px;margin:0 auto;border-radius:20px;overflow:hidden;background:#fbf4ff;color:#503475;box-shadow:0 14px 35px rgba(12,5,30,.4);text-align:left}
+#modalBody .mitta-pass-main{min-width:0}
+#modalBody .mitta-pass-header{display:flex;justify-content:space-between;align-items:center;padding:20px 26px;background:#39265d;color:#fff0ce}
+#modalBody .mitta-pass-header b{display:block;font-family:Georgia,serif;font-size:clamp(20px,3vw,30px)}
+#modalBody .mitta-pass-header small{display:block;margin-top:4px;font-size:10px;letter-spacing:.14em;color:#d7b8ff}
+#modalBody .mitta-pass-header>span{font-size:28px;color:#f9d78c}
+#modalBody .mitta-pass-route{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:24px 26px 14px}
+#modalBody .mitta-pass-route>div:last-child{text-align:right}
+#modalBody .mitta-pass-route small,#modalBody .mitta-pass-fields small{display:block;color:#9377aa;font-size:10px;letter-spacing:.12em}
+#modalBody .mitta-pass-route strong{display:block;font-size:clamp(30px,5vw,48px);line-height:1.2}
+#modalBody .mitta-pass-route span{display:block;font-size:10px;letter-spacing:.04em}
+#modalBody .mitta-pass-route .mitta-pass-route-line{flex:1;text-align:center;color:#a278cb;font-size:28px;border-bottom:1px dashed #cdb8de;line-height:1.1}
+#modalBody .mitta-pass-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 20px;margin:0 26px;padding:20px 0;border-top:1px solid #dfcde9}
+#modalBody .mitta-pass-fields b{display:block;margin-top:5px;font-size:clamp(12px,1.7vw,17px);overflow-wrap:anywhere}
+#modalBody .mitta-pass-thanks{padding:5px 26px 22px;color:#6c4992;font-weight:700;font-size:13px}
+#modalBody .mitta-pass-thanks span{display:block;margin-top:7px;font-size:9px;font-weight:400;letter-spacing:.07em}
+#modalBody .mitta-pass-stub{display:flex;flex-direction:column;align-items:center;justify-content:space-around;gap:12px;padding:24px 16px;border-left:2px dashed #bda3d2;background:#ede0f8;text-align:center;position:relative}
+#modalBody .mitta-pass-stub:before,#modalBody .mitta-pass-stub:after{content:'';position:absolute;left:-11px;width:20px;height:20px;border-radius:50%;background:#241936}
+#modalBody .mitta-pass-stub:before{top:-10px}#modalBody .mitta-pass-stub:after{bottom:-10px}
+#modalBody .mitta-stub-title{font-size:11px;letter-spacing:.13em;font-weight:700}
+#modalBody .mitta-pass-stub strong{font-size:23px}#modalBody .mitta-pass-stub strong span{color:#a278cb}
+#modalBody .mitta-pass-stub small{font-size:10px;letter-spacing:.08em}
+#modalBody .mitta-pass-barcode{width:100%;height:55px;background:repeating-linear-gradient(90deg,#493361 0 2px,transparent 2px 5px,#493361 5px 6px,transparent 6px 10px,#493361 10px 14px,transparent 14px 18px)}
+#modalBody .mitta-pass-stamp{display:grid;place-items:center;width:44px;height:44px;border:2px solid #8c62ae;border-radius:50%;font-size:26px;color:#79519c}
+#modalBody .mitta-pass-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:18px auto 0}
+#modalBody .mitta-pass-actions button{padding:12px 18px;border:1px solid #b891e5;border-radius:10px;background:#7652a6;color:white;font-weight:700;cursor:pointer}
+#modalBody .mitta-pass-actions button:hover{background:#8a61ba}
+@media(max-width:640px){#modalBody .mitta-boarding-pass{grid-template-columns:1fr}#modalBody .mitta-pass-stub{border-left:0;border-top:2px dashed #bda3d2;flex-direction:row;flex-wrap:wrap;gap:10px;padding:14px}#modalBody .mitta-pass-stub:before,#modalBody .mitta-pass-stub:after{display:none}#modalBody .mitta-pass-barcode{width:90px;height:36px}#modalBody .mitta-pass-stub strong{font-size:17px}#modalBody .mitta-pass-route{padding:16px 14px}#modalBody .mitta-pass-fields{margin:0 14px;padding:14px 0}#modalBody .mitta-pass-header{padding:14px}#modalBody .mitta-pass-thanks{padding:4px 14px 16px}}
+@media print{body:has(#mittaBoardingPass) *{visibility:hidden!important}body:has(#mittaBoardingPass) #mittaBoardingPass,body:has(#mittaBoardingPass) #mittaBoardingPass *{visibility:visible!important}body:has(#mittaBoardingPass) #mittaBoardingPass{position:fixed!important;top:12mm!important;left:5%!important;width:90%!important;max-width:none!important;box-shadow:none!important;print-color-adjust:exact!important;-webkit-print-color-adjust:exact!important}body:has(#mittaBoardingPass) #mittaBoardingPass .mitta-pass-stub:before,body:has(#mittaBoardingPass) #mittaBoardingPass .mitta-pass-stub:after{background:white!important}}
+
+/* 룬 탐험 수첩: 넓은 화면에서 두 열, 좁은 화면에서 한 열 */
+.rune-journal {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+}
+.rune-journal > p {
+  grid-column: 1 / -1;
+}
+.rune-journal .rune-entry {
+  min-width: 0;
+  box-sizing: border-box;
+}
+@media (max-width: 680px) {
+  .rune-journal { grid-template-columns: minmax(0, 1fr); }
+  .modal_content:has(.rune-journal) {
+    width: calc(100vw - 20px);
+    max-width: 100%;
+  }
+}

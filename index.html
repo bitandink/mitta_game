@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitta's Airline | 할로윈섬</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <link rel="stylesheet" href="./css/game.css">
+    <link rel="stylesheet" href="./css/minigames.css">
+</head>
+<body>
+    <!-- 01. 게임 헤더 -->
+    <header class="game_title">
+        <h1>✈️ Mitta's Airline</h1>
+        <h4>🎃 할로윈 섬에서 길을 잃은 느요미를 도와주세요</h4>
+    </header>
+
+    <!-- 02. 게임 지도 및 진행 현황 -->
+    <main class="game_screen">
+        <div class="game_navigation row">
+            <div class="nickname"><span id="passengerName">승객: 탑승 대기 중</span><button type="button" id="changePassengerButton" class="passenger-change">승객 변경</button></div>
+            <div class="star_point">
+                <span id="starCount">⭐ 0 / 13</span>
+                <button type="button" id="journalButton">📜 단서 수첩 <span id="journalCount">0 / 12</span></button>
+                <button type="button" id="certificateButton" disabled>탑승 인증서</button>
+            </div>
+        </div>
+        <div class="game_map">
+            <!-- 각 장소를 클릭하면 해당 미니게임이 열립니다. -->
+            <button class="map_point" data-stage="candy" style="--x: 21%; --y: 35%" aria-label="달콤한 라운지"></button>
+            <button class="map_point" data-stage="cave" style="--x: 46%; --y: 33%" aria-label="불타는 동굴"></button>
+            <button class="map_point" data-stage="potion" style="--x: 65%; --y: 37%;" aria-label="사랑의 묘약 가게"></button>
+            <button class="map_point" data-stage="treat" style="--x: 88%; --y: 44%;" aria-label="트릭 오어 트릿 거리"></button>
+            <button class="map_point" data-stage="shelter" style="--x: 15%; --y: 56%;" aria-label="검은 고양이의 쉼터"></button>
+            <button class="map_point" data-stage="cake" style="--x: 30%; --y: 58%;" aria-label="할로윈 케이크 하우스"></button>
+            <button class="map_point" data-stage="hut" style="--x: 70%; --y: 59%;" aria-label="꼬마 마녀의 오두막"></button>
+            <button class="map_point" data-stage="broom" style="--x: 90%; --y: 59%;" aria-label="마녀의 빗자루 언덕"></button>
+            <button class="map_point" data-stage="kitchen" style="--x: 22%; --y: 79%;" aria-label="마녀의 요리공방"></button>
+            <button class="map_point" data-stage="hat" style="--x: 44%; --y: 84%;" aria-label="마법사의 모자 숲"></button>
+            <button class="map_point" data-stage="ghost" style="--x: 70%; --y: 82%;" aria-label="반짝이는 유령 연못"></button>
+            <button class="map_point" data-stage="forest" style="--x: 89%; --y: 76%;" aria-label="유령의 나무숲"></button>
+            <button class="map_point" data-stage="moon" style="--x: 50%; --y: 58%;" aria-label="달빛 전망대"></button>
+        </div>
+    </main>
+
+    <!-- 03. 탑승 수속: 매번 페이지를 열 때 표시 -->
+    <div class="checkin-overlay" id="checkinOverlay" role="dialog" aria-modal="true" aria-labelledby="checkinTitle">
+        <section class="checkin-panel">
+            <div class="checkin-symbol">✈️ 🌙 🎃</div>
+            <p class="checkin-eyebrow">WELCOME ABOARD</p>
+            <h2 id="checkinTitle">Mitta's Airline</h2>
+            <p class="checkin-subtitle">할로윈섬으로 떠나는 승객님의 탑승 수속을 시작합니다.</p>
+            <div id="existingPassengers" class="checkin-existing" hidden>
+                <h3>🎫 기존 승객으로 탑승</h3>
+                <div id="passengerList" class="checkin-passenger-list"></div>
+                <div class="checkin-divider">또는 새로운 여행 시작</div>
+            </div>
+            <form id="checkinForm" class="checkin-form">
+                <label for="passengerNickname">승객 닉네임</label>
+                <input id="passengerNickname" type="text" maxlength="12" autocomplete="off" placeholder="닉네임을 입력해 주세요" required>
+                <span class="checkin-help">최대 12글자 · 승객별 게임 진행 상황이 저장됩니다.</span>
+                <p class="checkin-choice-title">여행 캐릭터 선택</p>
+                <div id="characterChoices" class="checkin-characters" role="radiogroup" aria-label="여행 캐릭터">
+                    <label><input type="radio" name="passengerCharacter" value="cat" checked><span><img class="character-portrait" src="assets/images/character/cat.png" alt="" loading="lazy">검은 고양이</span></label>
+                    <label><input type="radio" name="passengerCharacter" value="ghost"><span><img class="character-portrait" src="assets/images/character/ghost.png" alt="" loading="lazy">꼬마 유령</span></label>
+                    <label><input type="radio" name="passengerCharacter" value="witch"><span><img class="character-portrait" src="assets/images/character/witch.png" alt="" loading="lazy">꼬마 마녀</span></label>
+                    <label><input type="radio" name="passengerCharacter" value="pumpkin"><span><img class="character-portrait" src="assets/images/character/pumpkin.png" alt="" loading="lazy">호박 요정</span></label>
+                </div>
+                <p id="checkinMessage" class="checkin-message" role="status" aria-live="polite"></p>
+                <button class="checkin-submit" type="submit">✈️ 탑승 수속 완료</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- 04. 미니게임 모달 -->
+    <div class="game_modal" id="gameModal" hidden>
+        <div class="modal_content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal_close" id="modalClose" aria-label="닫기">✕</button>
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody">
+                <!-- 미니게임 실행 영역 -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="game_copyright">
+        <p>
+            © 2026 Mitta's Airline.
+            Artwork by Spoon Radio DJ Mitta · Game developed by Spoon Radio User yaon
+        </p>
+    </footer>
+
+    <!-- 04. 미니게임 스크립트 (메인 스크립트보다 먼저 로드) -->
+    <script src="./js/game/candy.js"></script>
+    <script src="./js/game/cave.js"></script>
+    <script src="./js/game/potion.js"></script>
+    <script src="./js/game/treat.js"></script>
+    <script src="./js/game/shelter.js"></script>
+    <script src="./js/game/cake.js"></script>
+    <script src="./js/game/adaptive.js"></script>
+    <script src="./js/game/hut.js"></script>
+    <script src="./js/game/broom.js"></script>
+    <script src="./js/game/kitchen.js"></script>
+    <script src="./js/game/hat.js"></script>
+    <script src="./js/game/ghost.js"></script>
+    <script src="./js/game/forest.js"></script>
+    <script src="./js/game/moon.js"></script>
+    <!-- 05. 공통 게임 제어 -->
+    <script src="./js/script.js"></script>
+</body>
+</html>

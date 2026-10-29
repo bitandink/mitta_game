@@ -1,0 +1,140 @@
+/* ============================================================================
+ * 게임 지도 / 모달 / 진행 표시
+ * ============================================================================ */
+
+.star_point button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #7041a2;
+  color: #fff;
+  cursor: pointer;
+}
+
+.game_map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  background-image: url("../assets/images/halloween_map.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* --- --- 할로윈섬 게임 맵 --- --- */
+/* --- 투명 클릭 영역 --- */
+.map_point {
+  position: absolute;
+
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+
+  width: 11%;
+  aspect-ratio: 1 / 1;
+
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+/* --- 마우스 오버 --- */
+.map_point:hover,
+.map_point:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 18px rgba(255, 220, 255, 0.4);
+}
+
+.map_point:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* --- --- 미니게임 모달 --- --- */
+.game_modal:not([hidden]) {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  background: rgba(10, 5, 25, 0.75);
+}
+
+.modal_content {
+  position: relative;
+
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  padding: 32px;
+
+  background: #201739;
+  color: #fff;
+  border: 2px solid #7041a2;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.modal_close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+/* --- 맵 프레임 --- */
+.game_map {
+  border: 3px solid #7041a2;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(75, 35, 120, 0.18);
+}
+
+/* --- 룬 수첩과 진행 표시 --- */
+.star_point button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.map_point.is-cleared::after {
+  content: '⭐';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: clamp(12px, 2vw, 22px);
+  pointer-events: none;
+}
+
+
+/* ============================================================================
+ * Mitta's Airline · 탑승 수속 / 승객 전환
+ * ============================================================================ */
+.checkin-overlay:not([hidden]){position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(14,8,32,.92);overflow-y:auto}
+.checkin-overlay[hidden]{display:none!important}
+.checkin-panel{width:min(100%,560px);max-height:calc(100vh - 40px);overflow-y:auto;padding:clamp(20px,4vw,36px);border:2px solid #9973c8;border-radius:22px;background:linear-gradient(145deg,#291c4b,#1d1636 75%);box-shadow:0 20px 65px #080414a8;color:#fff;text-align:center}
+.checkin-symbol{font-size:35px;letter-spacing:8px}.checkin-eyebrow{margin:8px 0 2px;color:#f9d99d;font-size:12px;letter-spacing:3px}.checkin-panel h2{margin:0;color:#ffe3a9;font-size:clamp(24px,5vw,33px)}.checkin-subtitle{font-size:14px;line-height:1.6;color:#dfd1ef}
+.checkin-form{text-align:left}.checkin-form>label,.checkin-choice-title{display:block;margin:14px 0 8px;color:#ffe3a9;font-size:14px;font-weight:700}.checkin-form>input{width:100%;padding:13px 15px;border:1px solid #9474bc;border-radius:10px;background:#f9f4ff;color:#211631;font:inherit}.checkin-help{display:block;margin-top:6px;color:#c5b3dd;font-size:12px}
+.checkin-characters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.checkin-characters label{cursor:pointer}.checkin-characters input{position:absolute;opacity:0;width:1px;height:1px}.checkin-characters label span{display:flex;min-height:94px;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:8px 3px;border:2px solid #665083;border-radius:12px;background:#35254f;color:#f3eaff;font-size:12px;text-align:center}.checkin-characters b{font-size:32px;font-weight:400}.checkin-characters input:checked+span{border-color:#ffda93;background:#543770;box-shadow:0 0 0 1px #ffda9380}.checkin-characters input:focus-visible+span{outline:3px solid #fff;outline-offset:2px}
+.checkin-submit{width:100%;margin-top:12px;padding:14px;border:0;border-radius:12px;background:#e3b46d;color:#241631;font:inherit;font-weight:800;cursor:pointer}.checkin-submit:hover{background:#ffda95}.checkin-message{min-height:18px;margin:10px 0 0;color:#ffb7c2;font-size:13px}.checkin-existing h3{margin:22px 0 10px;font-size:15px;color:#ffe3a9;text-align:left}.checkin-passenger-list{display:grid;gap:8px;max-height:180px;overflow:auto}.checkin-passenger{display:flex;align-items:center;gap:12px;width:100%;padding:9px 12px;border:1px solid #71558f;border-radius:11px;background:#382850;color:white;text-align:left;cursor:pointer}.checkin-passenger:hover,.checkin-passenger:focus-visible{border-color:#ffe3a9;background:#503568}.checkin-passenger-icon{font-size:29px}.checkin-passenger strong,.checkin-passenger small{display:block}.checkin-passenger small{margin-top:3px;color:#d7c6e8;font-size:11px}.checkin-divider{margin:15px 0 4px;color:#bda7d6;font-size:12px}
+.game_navigation .nickname{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700}.passenger-change{padding:7px 10px;border:1px solid #a484c9;border-radius:8px;background:#382750;color:#f5eaff;font-size:12px;cursor:pointer}.passenger-change:hover{background:#5d4080}.certificate-passenger{font-size:20px;font-weight:800;color:#ffdf9d}
+@media(max-width:480px){.checkin-characters{grid-template-columns:repeat(2,minmax(0,1fr))}.checkin-characters label span{min-height:78px}.checkin-panel{max-height:calc(100vh - 24px)}.checkin-overlay:not([hidden]){padding:12px}}
+
+/* Illustrated boarding portraits */
+.checkin-characters label span{min-height:112px;gap:6px;overflow:hidden}
+.checkin-characters .character-portrait{width:65px;height:65px;max-width:100%;object-fit:contain;display:block;filter:drop-shadow(0 3px 5px #140d2880);transition:transform .18s ease}
+.checkin-characters input:checked+span .character-portrait{transform:scale(1.09)}
+.checkin-passenger-icon img,.passenger-avatar{width:34px;height:34px;object-fit:contain;vertical-align:middle;filter:drop-shadow(0 2px 3px #0005)}
+@media(max-width:480px){.checkin-characters label span{min-height:96px}.checkin-characters .character-portrait{width:56px;height:56px}}
