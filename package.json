@@ -1,0 +1,1 @@
+{"name":"mitta-gate","private":true,"type":"module","scripts":{"dev":"vercel dev","codes":"node scripts/generate-codes.mjs"},"dependencies":{"@vercel/edge":"^1.2.2"},"engines":{"node":">=20"}}

@@ -1,0 +1,6 @@
+.env*
+!.env.example
+codes.csv
+codes-import.json
+node_modules
+.vercel
