@@ -148,7 +148,7 @@ function passengerRunePuzzle() {
 
   if (!valid) {
     currentPassenger.runePuzzle = newRunePuzzle();
-    persistPassengers();
+    console.warn("승객 룬 퍼즐이 유효하지 않습니다. DB의 원본을 확인해 주세요.");
   }
 
   return currentPassenger.runePuzzle;
@@ -267,182 +267,173 @@ function sanitizeProgress(value) {
   return Array.isArray(value) ? [...new Set(value.filter((id) => Object.hasOwn(stages, id)))] : [];
 }
 
-function loadPassengers() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(PASSENGER_STORAGE_KEY) || '[]');
-
-    if (Array.isArray(saved))
-      passengers = saved
-
-        .filter(
-          (p) =>
-            p &&
-            typeof p.id === 'string' &&
-            typeof p.nickname === 'string' &&
-            Object.hasOwn(CHARACTER_EMOJI, p.character),
-        )
-
-        .map((p) => ({ ...p, completedStages: sanitizeProgress(p.completedStages) }));
-  } catch (error) {
-    console.warn('승객 정보를 불러오지 못했습니다.', error);
-  }
+// DB가 공식 저장소입니다. 브라우저에는 이 기기의 승객 복구 자격만 보관합니다.
+const DB_PASSENGERS_KEY = 'mittaDbPassengerCredentialsV1';
+let passengerRevision = 0;
+let pendingSave = Promise.resolve();
+let saveError = null;
+let saving = false;
+let passengerBusy = false;
+function readKnownPassengers() {
+  try { const v = JSON.parse(localStorage.getItem(DB_PASSENGERS_KEY) || '[]'); return Array.isArray(v) ? v.filter(p => p && typeof p.id === 'string' && typeof p.recoveryCode === 'string') : []; }
+  catch { return []; }
 }
-
-function persistPassengers() {
-  try {
-    localStorage.setItem(PASSENGER_STORAGE_KEY, JSON.stringify(passengers));
-  } catch (error) {
-    console.warn('승객 기록을 저장하지 못했습니다.', error);
-  }
+let knownPassengers = readKnownPassengers();
+function storeKnownPassengers() {
+  try { localStorage.setItem(DB_PASSENGERS_KEY, JSON.stringify(knownPassengers)); return true; }
+  catch { return false; }
 }
-
-function legacyProgress() {
-  try {
-    return sanitizeProgress(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
-  } catch {
-    return [];
-  }
+async function passengerApi(action, payload = {}) {
+  const r = await fetch('/api/passengers', {
+    method: 'POST', credentials: 'same-origin', cache: 'no-store',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...payload })
+  });
+  let d; try { d = await r.json(); } catch { throw Error('서버 응답을 확인할 수 없습니다.'); }
+  if (!r.ok) throw Error(d.error || `서버 오류 (${r.status})`);
+  return d;
 }
-
+function progressFromServer(data) {
+  const p = data.passenger, g = data.progress;
+  if (!p || !g) throw Error('승객 기록이 올바르지 않습니다.');
+  return { id: p.id, nickname: p.nickname, character: p.character,
+    completedStages: sanitizeProgress(g.completed_stages), runePuzzle: g.rune_puzzle,
+    revision: g.revision };
+}
+function showSaveStatus(message) {
+  let el = document.getElementById('dbSaveStatus');
+  if (!el) {
+    el = document.createElement('span'); el.id = 'dbSaveStatus';
+    el.setAttribute('role','status'); el.setAttribute('aria-live','polite');
+    el.style.cssText = 'display:inline-block;margin:4px 8px;font-size:12px;';
+    changePassengerButton.after(el);
+  }
+  el.textContent = message;
+}
 function setPassenger(passenger) {
   if (!passenger) return;
-
   currentPassenger = passenger;
-
-  passengerRunePuzzle();
-
+  passengerRevision = Number.isInteger(passenger.revision) ? passenger.revision : 0;
   completedStages = sanitizeProgress(passenger.completedStages);
-
-  passengerName.replaceChildren(
-    makePassengerAvatar(passenger.character),
-
-    document.createTextNode(` ${passenger.nickname} 승객님`),
-  );
-
+  passengerName.replaceChildren(makePassengerAvatar(passenger.character), document.createTextNode(` ${passenger.nickname} 승객님`));
   checkinOverlay.hidden = true;
-
   document.body.classList.remove('checkin-active');
-
   main.inert = false;
-
   updateProgress();
-
+  showSaveStatus('☁️ DB 기록 불러옴');
   changePassengerButton.focus();
 }
-
 function renderPassengerList() {
   passengerList.replaceChildren();
-
-  existingPassengers.hidden = passengers.length === 0;
-
-  passengers.forEach((p) => {
-    const button = document.createElement('button');
-
-    button.type = 'button';
-
-    button.className = 'checkin-passenger';
-
-    const icon = document.createElement('span');
-
-    icon.className = 'checkin-passenger-icon';
-
-    icon.append(makePassengerAvatar(p.character));
-
-    const details = document.createElement('span');
-
-    const name = document.createElement('strong');
-
-    name.textContent = p.nickname;
-
-    const progress = document.createElement('small');
-
-    progress.textContent = `⭐ ${
-      sanitizeProgress(p.completedStages).length
-    } / 13 · 이어서 여행하기`;
-
-    details.append(name, progress);
-
-    button.append(icon, details);
-
-    button.addEventListener('click', () => setPassenger(p));
-
+  existingPassengers.hidden = knownPassengers.length === 0;
+  knownPassengers.forEach(p => {
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'checkin-passenger';
+    const icon = document.createElement('span'); icon.className = 'checkin-passenger-icon'; icon.append(makePassengerAvatar(p.character));
+    const details = document.createElement('span'); const name = document.createElement('strong'); name.textContent = p.nickname;
+    const info = document.createElement('small'); info.textContent = '☁️ DB에서 진행도 불러오기';
+    details.append(name,info); button.append(icon,details);
+    button.addEventListener('click', async () => {
+      if (passengerBusy) return; passengerBusy = true; button.disabled = true; checkinMessage.textContent = '승객 기록을 불러오는 중...';
+      try { const data = await passengerApi('login',{passengerId:p.id,recoveryCode:p.recoveryCode}); setPassenger(progressFromServer(data)); }
+      catch(e) { checkinMessage.textContent = `불러오기 실패: ${e.message}`; }
+      finally { passengerBusy = false; button.disabled = false; }
+    });
     passengerList.append(button);
   });
 }
-
-function openCheckin() {
-  if (!modal.hidden) closeModal();
-
-  currentPassenger = null;
-
-  completedStages = [];
-
-  main.inert = true;
-
-  document.body.classList.add('checkin-active');
-
-  checkinOverlay.hidden = false;
-
-  checkinForm.reset();
-
-  checkinMessage.textContent = '';
-
-  renderPassengerList();
-
-  checkinNickname.focus();
+async function openCheckin() {
+  if (passengerBusy) return;
+  if (currentPassenger) {
+    try { await saveProgressNow(); }
+    catch(e) { alert(`DB 저장에 실패했습니다. 승객 변경을 취소합니다.\n${e.message}`); return; }
+    if (!modal.hidden) closeModal();
+    try { await passengerApi('logout'); } catch(e) { alert(`승객 세션 종료에 실패했습니다: ${e.message}`); return; }
+  }
+  currentPassenger = null; completedStages = [];
+  main.inert = true; document.body.classList.add('checkin-active'); checkinOverlay.hidden = false;
+  checkinForm.reset(); checkinMessage.textContent = ''; renderPassengerList(); checkinNickname.focus();
 }
-
-checkinForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-
+checkinForm.addEventListener('submit', async event => {
+  event.preventDefault(); if (passengerBusy) return;
   const nickname = checkinNickname.value.trim();
-
-  if (!nickname || nickname.length > 12) {
-    checkinMessage.textContent = '닉네임을 1~12글자로 입력해 주세요.';
-
-    return;
-  }
-
-  if (passengers.some((p) => p.nickname.toLocaleLowerCase() === nickname.toLocaleLowerCase())) {
-    checkinMessage.textContent = '이미 등록된 닉네임이에요. 위에서 기존 승객을 선택해 주세요.';
-
-    return;
-  }
-
+  if (!nickname || [...nickname].length > 12) { checkinMessage.textContent = '닉네임을 1~12글자로 입력해 주세요.'; return; }
   const character = checkinForm.elements.passengerCharacter.value;
-
-  if (!Object.hasOwn(CHARACTER_EMOJI, character)) return;
-
-  // 기존 단일 저장 기록은 처음 등록하는 승객에게만 복사합니다.
-
-  const inherited = passengers.length === 0 ? legacyProgress() : [];
-
-  const passenger = {
-    id:
-      typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `p-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-
-    nickname,
-
-    character,
-
-    completedStages: inherited,
-
-    runePuzzle: newRunePuzzle(),
-  };
-
-  passengers.push(passenger);
-
-  persistPassengers();
-
-  setPassenger(passenger);
+  if (!Object.hasOwn(CHARACTER_EMOJI,character)) return;
+  passengerBusy = true; const submit = checkinForm.querySelector('[type=submit]'); submit.disabled = true;
+  checkinMessage.textContent = 'DB에 새 승객을 등록하는 중...';
+  try {
+    const data = await passengerApi('register',{nickname,character,runePuzzle:newRunePuzzle()});
+    const p = progressFromServer(data);
+    const credential = {id:p.id,nickname:p.nickname,character:p.character,recoveryCode:data.recoveryCode};
+    knownPassengers.push(credential);
+    const stored = storeKnownPassengers();
+    setPassenger(p);
+    // 복구코드는 새 기기에서 이어하기에 필요하므로 최초 등록 때 반드시 보여줍니다.
+    alert(`🎫 승객 등록 완료!\n\n승객 ID: ${p.id}\n복구코드: ${data.recoveryCode}\n\n이 정보를 안전하게 보관하세요. 다른 기기에서 기록을 복원할 때 필요합니다.${stored?'':'\n⚠️ 브라우저에 복구 정보가 저장되지 않았습니다.'}`);
+  } catch(e) { checkinMessage.textContent = `승객 등록 실패: ${e.message}`; }
+  finally { passengerBusy = false; submit.disabled = false; }
 });
-
 changePassengerButton.addEventListener('click', openCheckin);
-
-loadPassengers();
-
+const saveExitButton = document.createElement('button');
+saveExitButton.type = 'button'; saveExitButton.textContent = '💾 저장 후 종료';
+saveExitButton.className = 'passenger-change';
+changePassengerButton.after(saveExitButton);
+saveExitButton.addEventListener('click', async () => {
+  if (!currentPassenger || passengerBusy) return;
+  saveExitButton.disabled = true;
+  try { await window.mittaSaveAndExit(); }
+  catch(e) { alert(`저장 후 종료할 수 없습니다. DB 연결을 확인해 주세요.\n${e.message}`); }
+  finally { saveExitButton.disabled = false; }
+});
+function enqueueProgressSave() {
+  if (!currentPassenger) return pendingSave;
+  const id = currentPassenger.id;
+  const snapshot = [...completedStages];
+  pendingSave = pendingSave.catch(()=>{}).then(async () => {
+    if (!currentPassenger || currentPassenger.id !== id) throw Error('승객이 변경되었습니다.');
+    saving = true; showSaveStatus('☁️ 저장 중...');
+    try {
+      const result = await passengerApi('save',{completedStages:snapshot,revision:passengerRevision});
+      passengerRevision = result.progress.revision;
+      currentPassenger.revision = passengerRevision;
+      saveError = null; showSaveStatus('☁️ 저장 완료');
+    } catch(e) { saveError = e; showSaveStatus('⚠️ DB 저장 실패 — 다시 시도 필요'); throw e; }
+    finally { saving = false; }
+  });
+  return pendingSave;
+}
+async function saveProgressNow() {
+  await pendingSave.catch(() => {});
+  if (currentPassenger) await enqueueProgressSave();
+}
+// 게이트 인증 만료 시 호출할 수 있는 공통 저장 진입점.
+window.mittaSaveProgress = saveProgressNow;
+window.mittaSaveAndExit = async () => {
+  if (!currentPassenger) return;
+  await saveProgressNow();
+  await openCheckin();
+};
+// 다른 기기에서 복구코드를 입력해 DB 기록을 가져옵니다.
+const restoreWrap = document.createElement('div');
+restoreWrap.style.cssText = 'margin-top:16px;padding:12px;border:1px solid #bba9a0;border-radius:12px;';
+restoreWrap.innerHTML = '<strong>🎫 다른 기기에서 이어하기</strong><p style="font-size:12px">승객 ID와 복구코드를 입력하세요.</p><form id="dbRestoreForm"><input name="id" aria-label="승객 ID" placeholder="승객 ID (UUID)" required style="width:100%;margin:4px 0;padding:8px"><input name="code" aria-label="복구코드" placeholder="복구코드" required style="width:100%;margin:4px 0;padding:8px"><button type="submit" class="checkin-submit">기록 불러오기</button></form><p id="dbRestoreMessage" role="status"></p>';
+checkinForm.after(restoreWrap);
+try { if (JSON.parse(localStorage.getItem(PASSENGER_STORAGE_KEY) || "[]").length) { const warn=document.createElement("p"); warn.style.cssText="font-size:12px;margin:8px 0;color:#ad673b"; warn.textContent="⚠️ 기존 테스트용 로컬 승객 기록이 있습니다. 자동 이전되지 않았으며 삭제하지 않았습니다."; restoreWrap.after(warn); } } catch {}
+restoreWrap.querySelector('form').addEventListener('submit', async event => {
+  event.preventDefault(); if (passengerBusy) return; passengerBusy = true;
+  const form = event.currentTarget, msg = restoreWrap.querySelector('#dbRestoreMessage');
+  const id = form.elements.id.value.trim(), recoveryCode = form.elements.code.value.trim();
+  msg.textContent = '불러오는 중...';
+  try {
+    const data = await passengerApi('login',{passengerId:id,recoveryCode});
+    const p = progressFromServer(data);
+    knownPassengers = knownPassengers.filter(x=>x.id!==p.id);
+    knownPassengers.push({id:p.id,nickname:p.nickname,character:p.character,recoveryCode});
+    if (!storeKnownPassengers()) alert('⚠️ 이 브라우저에 복구코드를 저장하지 못했습니다. 별도로 보관하세요.');
+    setPassenger(p);
+  } catch(e) { msg.textContent = `복원 실패: ${e.message}`; }
+  finally { passengerBusy = false; }
+});
 function isMoonUnlocked() {
   return CLUE_STAGES.every((id) => completedStages.includes(id));
 }
@@ -462,23 +453,16 @@ function updateProgress() {
 }
 
 function completeStage(id) {
-  if (!Object.hasOwn(stages, id) || completedStages.includes(id)) return;
-
+  if (!Object.hasOwn(stages,id) || completedStages.includes(id)) return;
   completedStages.push(id);
-
-  if (currentPassenger) {
-    currentPassenger.completedStages = [...completedStages];
-
-    persistPassengers();
-  }
-
+  if (currentPassenger) currentPassenger.completedStages = [...completedStages];
   updateProgress();
-
-  if (id !== 'moon' && runeClues()[id] && currentStage === id) {
-    showClueReward(id);
-  }
+  enqueueProgressSave().catch(error => {
+    console.error('스테이지 DB 저장 실패',error);
+    alert(`⚠️ 완료 기록을 DB에 저장하지 못했습니다.\n승객 변경이나 페이지 종료 전에 다시 저장해 주세요.\n${error.message}`);
+  });
+  if (id !== 'moon' && runeClues()[id] && currentStage === id) showClueReward(id);
 }
-
 function stopGames() {
   if (typeof CandyGame !== 'undefined') CandyGame.stop();
 
