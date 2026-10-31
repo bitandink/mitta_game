@@ -3800,7 +3800,7 @@
 #modalBody .moon-controls .moon-primary,#modalBody .moon-embedded-certificate .moon-primary{background:#7652a6;border-color:#d9b5ff;color:#fff}
 #modalBody .moon-status{min-height:24px;color:#ffe6aa;font-weight:600}#modalBody .moon-altar-wrap.moon-error{animation:moon-shake .4s}
 #modalBody .moon-cinematic{padding:14px}#modalBody .moon-scene{position:relative;overflow:hidden;width:100%;aspect-ratio:16/9;border-radius:15px;background-position:center;background-size:cover}
-#modalBody .moon-island{background-image:url('../assets/images/halloween_map.jpg')}
+#modalBody .moon-island{background-image:url('../assets/images/halloween_map.png')}
 #modalBody .moon-boarding{background-image:url('../assets/images/mittaair_side.png')}
 #modalBody .moon-flight{background:#161235;isolation:isolate}#modalBody .moon-flight-picture{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;max-width:none;transform:translateX(-6%) scale(1.16);transform-origin:center;animation:moon-flight-scene-pan 4.2s linear forwards;filter:none} @keyframes moon-flight-scene-pan{from{transform:translateX(-6%) scale(1.16)}to{transform:translateX(6%) scale(1.16)}}
 #modalBody .moon-sky-dust{position:absolute;inset:0;overflow:hidden;pointer-events:none}#modalBody .moon-particle{position:absolute;top:-10%;width:7px;height:7px;border-radius:50%;background:#ffe7a3;box-shadow:0 0 12px 4px #f2baff;animation:moon-fall 5s linear infinite}
