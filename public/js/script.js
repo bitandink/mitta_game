@@ -267,7 +267,7 @@ function sanitizeProgress(value) {
   return Array.isArray(value) ? [...new Set(value.filter((id) => Object.hasOwn(stages, id)))] : [];
 }
 
-// DB가 공식 저장소입니다. 브라우저에는 이 기기의 승객 복구 자격만 보관합니다.
+// DB is authoritative; passwords and recovery codes are never persisted in localStorage.
 const DB_PASSENGERS_KEY = 'mittaDbPassengerCredentialsV1';
 let passengerRevision = 0;
 let pendingSave = Promise.resolve();
@@ -279,9 +279,10 @@ function readKnownPassengers() {
   catch { return []; }
 }
 let knownPassengers = readKnownPassengers();
-function storeKnownPassengers() {
-  try { localStorage.setItem(DB_PASSENGERS_KEY, JSON.stringify(knownPassengers)); return true; }
-  catch { return false; }
+// Remove legacy credentials from browser storage after migration.
+function removeKnownPassenger(id) {
+  knownPassengers = knownPassengers.filter(p => p.id !== id);
+  try { if (knownPassengers.length) localStorage.setItem(DB_PASSENGERS_KEY,JSON.stringify(knownPassengers)); else localStorage.removeItem(DB_PASSENGERS_KEY); } catch {}
 }
 async function passengerApi(action, payload = {}) {
   const r = await fetch('/api/passengers', {
@@ -325,21 +326,7 @@ function setPassenger(passenger) {
 }
 function renderPassengerList() {
   passengerList.replaceChildren();
-  existingPassengers.hidden = knownPassengers.length === 0;
-  knownPassengers.forEach(p => {
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'checkin-passenger';
-    const icon = document.createElement('span'); icon.className = 'checkin-passenger-icon'; icon.append(makePassengerAvatar(p.character));
-    const details = document.createElement('span'); const name = document.createElement('strong'); name.textContent = p.nickname;
-    const info = document.createElement('small'); info.textContent = '☁️ DB에서 진행도 불러오기';
-    details.append(name,info); button.append(icon,details);
-    button.addEventListener('click', async () => {
-      if (passengerBusy) return; passengerBusy = true; button.disabled = true; checkinMessage.textContent = '승객 기록을 불러오는 중...';
-      try { const data = await passengerApi('login',{passengerId:p.id,recoveryCode:p.recoveryCode}); setPassenger(progressFromServer(data)); }
-      catch(e) { checkinMessage.textContent = `불러오기 실패: ${e.message}`; }
-      finally { passengerBusy = false; button.disabled = false; }
-    });
-    passengerList.append(button);
-  });
+  existingPassengers.hidden = true;
 }
 async function openCheckin() {
   if (passengerBusy) return;
@@ -357,19 +344,18 @@ checkinForm.addEventListener('submit', async event => {
   event.preventDefault(); if (passengerBusy) return;
   const nickname = checkinNickname.value.trim();
   if (!nickname || [...nickname].length > 12) { checkinMessage.textContent = '닉네임을 1~12글자로 입력해 주세요.'; return; }
+  const password = checkinForm.elements.passengerPassword.value;
+  const confirm = checkinForm.elements.passengerPasswordConfirm.value;
+  if (password.length < 8 || password.length > 128) { checkinMessage.textContent = '비밀번호는 8~128자로 설정해 주세요.'; return; }
+  if (password !== confirm) { checkinMessage.textContent = '비밀번호 확인이 일치하지 않습니다.'; return; }
   const character = checkinForm.elements.passengerCharacter.value;
   if (!Object.hasOwn(CHARACTER_EMOJI,character)) return;
   passengerBusy = true; const submit = checkinForm.querySelector('[type=submit]'); submit.disabled = true;
   checkinMessage.textContent = 'DB에 새 승객을 등록하는 중...';
   try {
-    const data = await passengerApi('register',{nickname,character,runePuzzle:newRunePuzzle()});
+    const data = await passengerApi('register',{nickname,password,character,runePuzzle:newRunePuzzle()});
     const p = progressFromServer(data);
-    const credential = {id:p.id,nickname:p.nickname,character:p.character,recoveryCode:data.recoveryCode};
-    knownPassengers.push(credential);
-    const stored = storeKnownPassengers();
     setPassenger(p);
-    // 복구코드는 새 기기에서 이어하기에 필요하므로 최초 등록 때 반드시 보여줍니다.
-    alert(`🎫 승객 등록 완료!\n\n승객 ID: ${p.id}\n복구코드: ${data.recoveryCode}\n\n이 정보를 안전하게 보관하세요. 다른 기기에서 기록을 복원할 때 필요합니다.${stored?'':'\n⚠️ 브라우저에 복구 정보가 저장되지 않았습니다.'}`);
   } catch(e) { checkinMessage.textContent = `승객 등록 실패: ${e.message}`; }
   finally { passengerBusy = false; submit.disabled = false; }
 });
@@ -413,26 +399,34 @@ window.mittaSaveAndExit = async () => {
   await saveProgressNow();
   await openCheckin();
 };
-// 다른 기기에서 복구코드를 입력해 DB 기록을 가져옵니다.
+// Existing passengers can sign in on any device using nickname + password.
 const restoreWrap = document.createElement('div');
 restoreWrap.style.cssText = 'margin-top:16px;padding:12px;border:1px solid #bba9a0;border-radius:12px;';
-restoreWrap.innerHTML = '<strong>🎫 다른 기기에서 이어하기</strong><p style="font-size:12px">승객 ID와 복구코드를 입력하세요.</p><form id="dbRestoreForm"><input name="id" aria-label="승객 ID" placeholder="승객 ID (UUID)" required style="width:100%;margin:4px 0;padding:8px"><input name="code" aria-label="복구코드" placeholder="복구코드" required style="width:100%;margin:4px 0;padding:8px"><button type="submit" class="checkin-submit">기록 불러오기</button></form><p id="dbRestoreMessage" role="status"></p>';
+restoreWrap.innerHTML = '<strong>🎫 기존 승객 이어하기</strong><p style="font-size:12px">등록한 닉네임과 비밀번호를 입력해 주세요.</p><form id="dbRestoreForm"><input name="nickname" aria-label="승객 닉네임" placeholder="스푼 닉네임" maxlength="12" required style="width:100%;margin:4px 0;padding:8px"><input name="password" type="password" autocomplete="current-password" aria-label="비밀번호" placeholder="비밀번호" minlength="8" maxlength="128" required style="width:100%;margin:4px 0;padding:8px"><button type="submit" class="checkin-submit">기존 기록 불러오기</button></form><p id="dbRestoreMessage" role="status"></p>';
 checkinForm.after(restoreWrap);
-try { if (JSON.parse(localStorage.getItem(PASSENGER_STORAGE_KEY) || "[]").length) { const warn=document.createElement("p"); warn.style.cssText="font-size:12px;margin:8px 0;color:#ad673b"; warn.textContent="⚠️ 기존 테스트용 로컬 승객 기록이 있습니다. 자동 이전되지 않았으며 삭제하지 않았습니다."; restoreWrap.after(warn); } } catch {}
 restoreWrap.querySelector('form').addEventListener('submit', async event => {
   event.preventDefault(); if (passengerBusy) return; passengerBusy = true;
   const form = event.currentTarget, msg = restoreWrap.querySelector('#dbRestoreMessage');
-  const id = form.elements.id.value.trim(), recoveryCode = form.elements.code.value.trim();
   msg.textContent = '불러오는 중...';
   try {
-    const data = await passengerApi('login',{passengerId:id,recoveryCode});
-    const p = progressFromServer(data);
-    knownPassengers = knownPassengers.filter(x=>x.id!==p.id);
-    knownPassengers.push({id:p.id,nickname:p.nickname,character:p.character,recoveryCode});
-    if (!storeKnownPassengers()) alert('⚠️ 이 브라우저에 복구코드를 저장하지 못했습니다. 별도로 보관하세요.');
-    setPassenger(p);
-  } catch(e) { msg.textContent = `복원 실패: ${e.message}`; }
+    const data = await passengerApi('login',{nickname:form.elements.nickname.value.trim(),password:form.elements.password.value});
+    form.reset(); setPassenger(progressFromServer(data));
+  } catch(e) { msg.textContent = `로그인 실패: ${e.message}`; }
   finally { passengerBusy = false; }
+});
+// One-time migration for accounts created with recovery codes in the old version.
+const migrationWrap=document.createElement('details');
+migrationWrap.style.cssText='margin-top:12px;font-size:12px;';
+migrationWrap.innerHTML='<summary>이전 버전 승객 기록 전환 (복구코드 보유자)</summary><form id="legacyMigrationForm"><input name="nickname" placeholder="기존 닉네임" maxlength="12" required style="width:100%;margin:4px 0;padding:8px"><input name="recoveryCode" placeholder="기존 복구코드" required style="width:100%;margin:4px 0;padding:8px"><input name="password" type="password" autocomplete="new-password" placeholder="새 비밀번호 (8자 이상)" minlength="8" maxlength="128" required style="width:100%;margin:4px 0;padding:8px"><button type="submit" class="checkin-submit">기존 기록에 비밀번호 설정</button></form><p id="legacyMigrationMessage" role="status"></p>';
+restoreWrap.after(migrationWrap);
+migrationWrap.querySelector('form').addEventListener('submit',async event=>{
+  event.preventDefault(); if(passengerBusy)return; passengerBusy=true;
+  const form=event.currentTarget,msg=migrationWrap.querySelector('#legacyMigrationMessage');
+  try{
+    const data=await passengerApi('migrate',{nickname:form.elements.nickname.value.trim(),recoveryCode:form.elements.recoveryCode.value.trim(),password:form.elements.password.value});
+    removeKnownPassenger(data.passenger.id);form.reset();setPassenger(progressFromServer(data));
+  }catch(e){msg.textContent=`기록 전환 실패: ${e.message}`;}
+  finally{passengerBusy=false;}
 });
 function isMoonUnlocked() {
   return CLUE_STAGES.every((id) => completedStages.includes(id));

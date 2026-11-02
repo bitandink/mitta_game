@@ -59,7 +59,12 @@
             <form id="checkinForm" class="checkin-form">
                 <label for="passengerNickname">승객 닉네임</label>
                 <input id="passengerNickname" type="text" maxlength="12" autocomplete="off" placeholder="닉네임을 입력해 주세요" required>
-                <span class="checkin-help">최대 12글자 · 승객별 게임 진행 상황이 저장됩니다.</span>
+                <span class="checkin-help">가급적 스푼에서 사용하는 닉네임으로 등록해 주세요. · 최대 12글자</span>
+                <label for="passengerPassword">비밀번호</label>
+                <input id="passengerPassword" name="passengerPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="게임 기록용 비밀번호 (8자 이상)" required>
+                <label for="passengerPasswordConfirm">비밀번호 확인</label>
+                <input id="passengerPasswordConfirm" name="passengerPasswordConfirm" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="비밀번호를 다시 입력해 주세요" required>
+                <span class="checkin-help">다른 기기에서도 닉네임과 비밀번호로 이어할 수 있어요. 비밀번호를 잊으면 복구하기 어려워요.</span>
                 <p class="checkin-choice-title">여행 캐릭터 선택</p>
                 <div id="characterChoices" class="checkin-characters" role="radiogroup" aria-label="여행 캐릭터">
                     <label><input type="radio" name="passengerCharacter" value="cat" checked><span><img class="character-portrait" src="assets/images/character/cat.png" alt="" loading="lazy">검은 고양이</span></label>
